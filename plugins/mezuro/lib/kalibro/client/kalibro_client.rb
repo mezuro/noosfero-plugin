@@ -16,7 +16,6 @@ class Kalibro::Client::KalibroClient
     @port.request(:process_project, {:project_name => project_name})
   end
 
-  #Caio needs to review this one. He must to ask to Carlos Morais
   def self.process_project(project_name, days)
     if days.to_i.zero?
     	new.process_project(project_name)
