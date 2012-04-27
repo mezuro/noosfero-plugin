@@ -8,6 +8,7 @@ gem 'selenium-client', '>= 1.2.17'
 gem 'database_cleaner'
 gem 'exception_notification', '1.0.20090728'
 gem 'system_timer'
+gem 'rake', '0.8.7'
 
 def program(name)
   unless system("which #{name} > /dev/null")
