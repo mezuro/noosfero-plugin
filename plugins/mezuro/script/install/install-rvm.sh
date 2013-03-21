@@ -48,7 +48,7 @@ gem install --no-ri --no-rdoc ffi -v 1.2.0
 gem install --no-ri --no-rdoc childprocess -v 0.3.6
 gem install --no-ri --no-rdoc websocket -v 1.0.4
 gem install --no-ri --no-rdoc libwebsocket -v 0.1.6.1
-gem install --no-ri --no-rdoc selenium-webdriver -v 2.30.0
+gem install --no-ri --no-rdoc selenium-webdriver -v 2.31.0
 gem install --no-ri --no-rdoc activesupport -v 2.3.5
 gem install --no-ri --no-rdoc actionpack -v 2.3.5
 gem install --no-ri --no-rdoc actionmailer -v 2.3.5
@@ -60,7 +60,7 @@ gem install --no-ri --no-rdoc gyoku -v 0.4.6
 gem install --no-ri --no-rdoc akami -v 1.2.0
 gem install --no-ri --no-rdoc xpath -v 0.1.4
 gem install --no-ri --no-rdoc mime-types -v 1.19
-gem install --no-ri --no-rdoc capybara -v 1.1.1
+gem install --no-ri --no-rdoc capybara -v 1.1.4
 gem install --no-ri --no-rdoc term-ansicolor -v 1.0.7
 gem install --no-ri --no-rdoc diff-lcs -v 1.1.3
 gem install --no-ri --no-rdoc cucumber -v 1.1.0
@@ -95,26 +95,26 @@ gem install --no-ri --no-rdoc will_paginate -v 2.3.12
 gem install --no-ri --no-rdoc gettext -v 1.8.0
 
 #Mezuro installation
-git clone git@gitorious.org:+mezuro/noosfero/mezuro.git
-cd mezuro
-git checkout mezuro-dev
-rvm use ruby-1.8.7-p302@mezuro
-cp config/database.yml.sqlite3 config/database.yml
-cp config/solr.yml.dist config/solr.yml
-cp plugins/mezuro/service.yml.example plugins/mezuro/service.yml
-cp plugins/mezuro/licenses.yml.example plugins/mezuro/licenses.yml
-mkdir tmp
-rake db:schema:load
-rake db:migrate
-rake makemo
-./script/sample-data
-./script/noosfero-plugins enable mezuro
-cd public/designs/themes
-rm -f default
-git clone https://git.gitorious.org/mezuro/mezuro-theme.git
-ln -s mezuro-theme/ default
-cd ../../../
-
-#Prepare Mezuro for running functional and unit tests
-rake solr:download
-rake db:test:prepare
+#git clone git@gitorious.org:+mezuro/noosfero/mezuro.git
+#cd mezuro
+#git checkout mezuro-dev
+#rvm use ruby-1.8.7-p302@mezuro
+#cp config/database.yml.sqlite3 config/database.yml
+#cp config/solr.yml.dist config/solr.yml
+#cp plugins/mezuro/service.yml.example plugins/mezuro/service.yml
+#cp plugins/mezuro/licenses.yml.example plugins/mezuro/licenses.yml
+#mkdir tmp
+#rake db:schema:load
+#rake db:migrate
+#rake makemo
+#./script/sample-data
+#./script/noosfero-plugins enable mezuro
+#cd public/designs/themes
+#rm -f default
+#git clone https://git.gitorious.org/mezuro/mezuro-theme.git
+#ln -s mezuro-theme/ default
+#cd ../../../
+#
+##Prepare Mezuro for running functional and unit tests
+#rake solr:download
+#rake db:test:prepare

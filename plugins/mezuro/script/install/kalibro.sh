@@ -10,7 +10,7 @@ sudo apt-get install tomcat6 tomcat6-common libtomcat6-java postgresql doxyparse
 wget http://analizo.org/download/analizo_1.16.0_all.deb
 sudo dpkg -i analizo_1.16.0_all.deb
 
-sudo -u postgres psql < db_bootstrap.sql
+sudo -u postgres psql < plugins/mezuro/script/install/db_bootstrap.sql
 
 #Kalibro
 USER_HOME=$(eval echo ~${SUDO_USER})
