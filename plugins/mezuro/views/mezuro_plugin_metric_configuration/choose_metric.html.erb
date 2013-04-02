@@ -11,12 +11,14 @@
 
   <div id="<%=base_tool.name%>" style="display:none">
     <% base_tool.supported_metrics.each do |metric| %>
-      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%= link_to metric.name, "#",   :onclick => "jQuery.colorbox({html:\"#{metric.name}\"});" %>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%= link_to metric.name, "#", :onclick => "jQuery.colorbox({href:\"http://localhost:3000/myprofile/adminuser/plugin/mezuro/metric_configuration/new_native/487?base_tool_name=Analizo&metric_name=Total+Abstract+Classes\"});" %>
       <hr size="1" width="93%"/>
     <% end %>
   </div>
 <% end %>
 <%
+# Temos que usar :layout => false
 #      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%= link_to metric.name, :controller => "mezuro_plugin_metric_configuration", :action => "new_native",
 #     				:metric_name => metric.name, :base_tool_name => base_tool.name, :id => @configuration_content.id %>
+
 %>
