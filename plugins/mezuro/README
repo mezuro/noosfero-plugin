@@ -109,6 +109,23 @@ or just:
 $ rake test:noosfero_plugin_mezuro:units
 $ rake test:noosfero_plugin:mezuro:functionals
 
+Running Mezuro Acceptance tests
+-------------------------------
+
+Mezuro acceptance tests depend on Kalibro Service. You must to install Kalibro
+Service to run them.
+
+$ cd mezuro
+$ ./plugins/mezuro/script/tests/run_acceptance_tests.sh plugins/mezuro/features/<feature_file>
+
+or
+
+$ ./plugins/mezuro/script/tests/run_acceptance_tests.sh plugins/mezuro/features/<feature_file> selenium
+
+for running tests in browser.
+
+* Make sure cucumber is set in environment variable PATH.
+
 
 Get Involved
 ============
