@@ -50,10 +50,12 @@
            else
              edit_action = "edit_native"
            end
+            link = colorbox_options({:href => url_for({:controller => "mezuro_plugin_metric_configuration", :action => edit_action,
+                  :metric_configuration_id => metric_configuration.id,
+                  :id => @configuration_content.id,
+                  :profile => @page.profile.identifier})})
         %>
-        <td><%= link_to metric_configuration.metric.name, :controller => "mezuro_plugin_metric_configuration", :action => edit_action, 
-          						  :metric_configuration_id => metric_configuration.id, :id => @configuration_content.id, 
-          						  :profile => @page.profile.identifier %></td>
+        <td><%= link_to metric_configuration.metric.name, '#', link%></td>
         <% if metric_configuration.metric.compound %>
           <td>
             Compound Metric

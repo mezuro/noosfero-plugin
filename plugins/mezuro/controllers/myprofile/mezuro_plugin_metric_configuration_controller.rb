@@ -8,10 +8,7 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
   end
 
   def new_native
-    @configuration_content = profile.articles.find(params[:id])
-    @reading_group_names_and_ids = reading_group_names_and_ids
-    @metric = Kalibro::BaseTool.find_by_name(params[:base_tool_name]).metric params[:metric_name]
-    @metric_configuration = Kalibro::MetricConfiguration.new :base_tool_name => params[:base_tool_name], :metric => @metric
+    params_to_new_view
     render :partial => "mezuro_plugin_metric_configuration/new_native", :locals => {
       :configuration_content => @configuration_content,
       :reading_group_names_and_ids => @reading_group_names_and_ids,
@@ -22,6 +19,14 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
 
   def edit_native
     params_to_edit_view
+    render :partial => "mezuro_plugin_metric_configuration/edit_native", :locals => {
+      :configuration_content => @configuration_content,
+      :reading_group_names_and_ids => @reading_group_names_and_ids,
+      :metric => @metric,
+      :metric_configuration => @metric_configuration,
+      :metric_configurations => @metric_configurations,
+      :ranges => @ranges
+    }
   end
 
   def new_compound
@@ -37,6 +42,7 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
 
   def edit_compound    
     params_to_edit_view
+
   end
 
   def create
@@ -100,6 +106,13 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
     url[:metric_configuration_id] = metric_configuration_id
     url[:action] = (params[:metric_configuration][:metric][:compound] == "true" ? "edit_compound" : "edit_native")
     url
+  end
+
+  def params_to_new_view
+    @configuration_content = profile.articles.find(params[:id])
+    @reading_group_names_and_ids = reading_group_names_and_ids
+    @metric = Kalibro::BaseTool.find_by_name(params[:base_tool_name]).metric params[:metric_name]
+    @metric_configuration = Kalibro::MetricConfiguration.new :base_tool_name => params[:base_tool_name], :metric => @metric
   end
 
   def params_to_edit_view
