@@ -28,6 +28,7 @@ sudo service tomcat6 restart
 
 # run test
 cucumber $TEST_FILE -p $PROFILE
+RETURN_STATUS=$? #Preserves the test exit status
 
 #back to normal mode
 echo "-->  Removing tests directory"
@@ -40,3 +41,4 @@ sudo service tomcat6 restart
 #~/tomcat6/bin/shoutdown.sh
 #~/tomcat6/bin/startup.sh
 
+exit ${RETURN_STATUS}
