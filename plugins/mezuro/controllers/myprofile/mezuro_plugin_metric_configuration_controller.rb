@@ -31,12 +31,20 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
 
   def new_compound
     @configuration_content = profile.articles.find(params[:id])
-    @metric_configurations = @configuration_content.metric_configurations
     @reading_group_names_and_ids = reading_group_names_and_ids
     metric = Kalibro::Metric.new :compound => true
     @metric_configuration = Kalibro::MetricConfiguration.new :metric => metric
+    @metric_configurations = @configuration_content.metric_configurations
     if configuration_content_has_errors?
-      redirect_to_error_page @configuration_content.errors[:base]
+      redirect_to_error_page @configuration_content.errors[:base] 
+    else
+      render :partial => "mezuro_plugin_metric_configuration/new_compound", :locals => {
+        :configuration_content => @configuration_content,
+        :reading_group_names_and_ids => @reading_group_names_and_ids,
+        :metric => metric,
+        :metric_configuration => @metric_configuration,
+        :metric_configurations => @metric_configurations
+      }
     end
   end
 
