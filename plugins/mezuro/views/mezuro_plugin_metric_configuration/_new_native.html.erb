@@ -2,8 +2,6 @@
 
 <h2><%= link_to("#{@configuration_content.name} Configuration", @configuration_content.view_url) %></h2>
 
-<div style="width:auto;">
-  <% form_for :metric_configuration, :url => {:action =>"create", :controller => "mezuro_plugin_metric_configuration"},  :method => :get do |f| %>
-    <%= render :partial => "native_metric_configuration_form", :locals => {:f => f} %>
-  <% end %>
-</div>
+<% form_for :metric_configuration, :url => {:action =>"create", :controller => "mezuro_plugin_metric_configuration"},  :method => :get do |f| %>
+  <%= render :partial => "native_metric_configuration_form", :locals => {:f => f} %>
+<% end %>

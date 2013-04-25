@@ -51,14 +51,6 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
   def edit_compound
     params_to_edit_view
     @metric_configurations = @configuration_content.metric_configurations
-    render :partial => "mezuro_plugin_metric_configuration/edit_compound", :locals => {
-      :configuration_content => @configuration_content,
-      :reading_group_names_and_ids => @reading_group_names_and_ids,
-      :metric => @metric,
-      :metric_configuration => @metric_configuration,
-      :metric_configurations => @metric_configurations,
-      :ranges => @ranges
-    }
   end
 
   def create
@@ -68,8 +60,7 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
     if metric_configuration_has_errors? metric_configuration
       redirect_to_error_page metric_configuration.errors[0].message
     else
-      redirect_to configuration_content.view_url #FIXME
-      #redirect_to(metric_configuration_url(configuration_content, metric_configuration.id))
+      redirect_to(metric_configuration_url(configuration_content, metric_configuration.id))
     end
   end
 
@@ -130,7 +121,6 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
     @reading_group_names_and_ids = reading_group_names_and_ids
     @metric = Kalibro::BaseTool.find_by_name(params[:base_tool_name]).metric params[:metric_name]
     @metric_configuration = Kalibro::MetricConfiguration.new :base_tool_name => params[:base_tool_name], :metric => @metric
-    @ranges = []
   end
 
   def params_to_edit_view
