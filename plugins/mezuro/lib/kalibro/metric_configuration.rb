@@ -28,9 +28,9 @@ class Kalibro::MetricConfiguration < Kalibro::Model
   end
 
   def self.find(id)
+    #TODO: on future versions of Kalibro this begin/rescue will be unnecessary
     begin
-      response = request(:get_metric_configuration, {:metric_configuration_id => id})[:metric_configuration]
-  	  new response
+      new request(:get_metric_configuration, {:metric_configuration_id => id})[:metric_configuration]
     rescue Savon::SOAP::Fault
       nil
     end
