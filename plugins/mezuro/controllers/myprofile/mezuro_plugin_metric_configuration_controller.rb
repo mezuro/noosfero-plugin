@@ -12,12 +12,6 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
     @reading_group_names_and_ids = reading_group_names_and_ids
     @metric = Kalibro::BaseTool.find_by_name(params[:base_tool_name]).metric params[:metric_name]
     @metric_configuration = Kalibro::MetricConfiguration.new :base_tool_name => params[:base_tool_name], :metric => @metric
-    render :partial => "mezuro_plugin_metric_configuration/new_native", :locals => {
-      :configuration_content => @configuration_content,
-      :reading_group_names_and_ids => @reading_group_names_and_ids,
-      :metric => @metric,
-      :metric_configuration => @metric_configuration
-    }
   end
 
   def edit_native
