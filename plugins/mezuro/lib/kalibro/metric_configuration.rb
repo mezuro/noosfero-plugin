@@ -28,8 +28,12 @@ class Kalibro::MetricConfiguration < Kalibro::Model
   end
 
   def self.find(id)
-    response = request(:get_metric_configuration, {:metric_configuration_id => id})[:metric_configuration]
-	new response
+    begin
+      response = request(:get_metric_configuration, {:metric_configuration_id => id})[:metric_configuration]
+  	  new response
+    rescue Savon::SOAP::Fault
+      nil
+    end
   end
 
   def self.metric_configurations_of(configuration_id)
