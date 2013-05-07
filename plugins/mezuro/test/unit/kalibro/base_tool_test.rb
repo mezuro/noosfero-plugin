@@ -15,7 +15,7 @@ class BaseToolTest < ActiveSupport::TestCase
   should 'get base tool by name' do
     request_body = {:base_tool_name => @base_tool.name}
     Kalibro::BaseTool.expects(:request).with(:get_base_tool, request_body).returns({:base_tool => @hash})
-    assert_equal @base_tool.name, Kalibro::BaseTool.find_by_name(@base_tool.name).name
+    assert_equal @base_tool, Kalibro::BaseTool.find_by_name(@base_tool.name)
   end
 
   should 'get all base tools' do

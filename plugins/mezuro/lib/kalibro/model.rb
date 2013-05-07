@@ -75,6 +75,19 @@ class Kalibro::Model
     end
   end
 
+  def ==(another)
+    unless self.class == another.class then
+      return false
+    end
+    self.variable_names.each {
+      |name|
+      unless self.send("#{name}") == another.send("#{name}") then
+        return false
+      end
+    }
+    true
+  end
+
   def self.exists?(id)
     request(exists_action, id_params(id))[:exists]
   end
@@ -83,6 +96,10 @@ class Kalibro::Model
 
   def fields
     instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '').to_sym }
+  end
+
+  def variable_names
+    instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '') }
   end
 
   def convert_to_hash(value)
