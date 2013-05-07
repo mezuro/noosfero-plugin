@@ -10,10 +10,6 @@ class Kalibro::BaseTool < Kalibro::Model
     @supported_metric
   end
 
-  def supported_metrics=(supported_metrics)
-    @supported_metric = supported_metrics
-  end
-
   def metric(name)
     supported_metrics.find {|metric| metric.name == name}
   end

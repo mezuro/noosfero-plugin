@@ -36,7 +36,7 @@ class Kalibro::Model
 
   def self.to_objects_array value
     array = value.kind_of?(Array) ? value : [value]
-    array.each.collect { |element| to_object(element) }
+    array.each.map { |element| to_object(element) }
   end
 
   def self.to_object value
