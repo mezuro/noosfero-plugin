@@ -29,6 +29,11 @@ class MezuroPlugin::ProjectContent < Article
     @project
   end
 
+  def repositories=(value)
+    @repositories = value.kind_of?(Array) ? value : [value]
+    @repositories = @repositories.map { |element| to_repository(element) }
+  end
+
   def repositories
     begin
       @repositories ||= Kalibro::Repository.repositories_of(project_id)
@@ -50,11 +55,6 @@ class MezuroPlugin::ProjectContent < Article
       @description = ""
     end
     @description
-  end
-
-  def repositories=(value)
-    @repositories = value.kind_of?(Array) ? value : [value]
-    @repositories = @repositories.map { |element| to_repository(element) }
   end
 
   private
