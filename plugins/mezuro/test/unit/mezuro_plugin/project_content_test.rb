@@ -56,4 +56,10 @@ class ProjectContentTest < ActiveSupport::TestCase
     assert_not_nil @project_content.errors[:base]
   end
 
+  should 'set description of the project correctly' do
+    assert_equal "return", @project_content.description = "return"
+    assert_not_equal "return", @project_content.description = "return2"
+  end
+
+
 end

@@ -29,9 +29,10 @@ class MezuroPlugin::ProjectContent < Article
     @project
   end
 
+  # FIXME: Not used by anyone, also, doesnt return an array when only an argument is passed
   def repositories=(value)
     @repositories = value.kind_of?(Array) ? value : [value]
-    @repositories = @repositories.map { |element| to_repository(element) }
+    @repositories = @repositories.map { |element| self.class.to_repository(element) }
   end
 
   def repositories
@@ -63,6 +64,7 @@ class MezuroPlugin::ProjectContent < Article
     value.kind_of?(Hash) ? Kalibro::Repository.new(value) : value
   end
 
+  # FIXME: Not used by anyone
   def validate_repository_address
     repositories.each do |repository|
       if (!repository.nil?)
