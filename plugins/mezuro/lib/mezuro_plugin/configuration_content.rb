@@ -1,4 +1,6 @@
 class MezuroPlugin::ConfigurationContent < Article
+  include ActionView::Helpers::TagHelper
+
   validate_on_create :validate_configuration_name
 
   settings_items :configuration_id
@@ -14,7 +16,6 @@ class MezuroPlugin::ConfigurationContent < Article
     'Set of metric configurations to interpret a Kalibro project'
   end
 
-  include ActionView::Helpers::TagHelper
   def to_html(options = {})
     lambda do
       render :file => 'content_viewer/show_configuration.rhtml'
