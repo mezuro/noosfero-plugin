@@ -72,16 +72,16 @@ class Kalibro::Model
     true
   end
 
+  def self.exists?(id)
+    request(exists_action, id_params(id))[:exists]
+  end
+
   def self.find(id)
     if(exists?(id))
       new request(find_action, id_params(id))["#{class_name.underscore}".to_sym]
     else
       raise Kalibro::Errors::RecordNotFound
     end
-  end
-
-  def self.exists?(id)
-    request(exists_action, id_params(id))[:exists]
   end
 
   def destroy
