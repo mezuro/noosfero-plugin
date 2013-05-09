@@ -15,6 +15,7 @@ class MezuroPluginMetricConfigurationControllerTest < ActionController::TestCase
     @request = ActionController::TestRequest.new
     @response = ActionController::TestResponse.new
     @profile = fast_create(Profile)
+    @not_owner_profile = fast_create(Profile, :id =>"5")
 
     @configuration = ConfigurationFixtures.configuration
     @created_configuration = ConfigurationFixtures.created_configuration
