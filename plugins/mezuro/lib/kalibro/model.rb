@@ -59,22 +59,6 @@ class Kalibro::Model
     new_model
   end
 
-  def self.find(id)
-    if(exists?(id))
-      new request(find_action, id_params(id))["#{class_name.underscore}".to_sym]
-    else
-      raise Kalibro::Errors::RecordNotFound
-    end
-  end
-
-  def destroy
-    begin
-      self.class.request(destroy_action, destroy_params)
-    rescue Exception => exception
-	    add_error exception
-    end
-  end
-
   def ==(another)
     unless self.class == another.class then
       return false
@@ -88,8 +72,24 @@ class Kalibro::Model
     true
   end
 
+  def self.find(id)
+    if(exists?(id))
+      new request(find_action, id_params(id))["#{class_name.underscore}".to_sym]
+    else
+      raise Kalibro::Errors::RecordNotFound
+    end
+  end
+
   def self.exists?(id)
     request(exists_action, id_params(id))[:exists]
+  end
+
+  def destroy
+    begin
+      self.class.request(destroy_action, destroy_params)
+    rescue Exception => exception
+	    add_error exception
+    end
   end
 
   protected
