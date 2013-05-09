@@ -12,7 +12,7 @@ class ModelTest < ActiveSupport::TestCase
     assert_equal [], @model.errors
   end
 
-  should 'return hash with errors' do
+  should 'create empty hash' do
     assert @model.to_hash.empty?
   end
 
@@ -23,5 +23,20 @@ class ModelTest < ActiveSupport::TestCase
     assert_equal 42, Kalibro::Model.request(:answer)
   end
 
+  should 'convert to oject' do
+	assert_equal @model, Kalibro::Model.to_object({})
+    assert_equal 42, Kalibro::Model.to_object(42)
+  end
+
+  should 'convert to object array' do
+    assert_equal [42, :answer], Kalibro::Model.to_objects_array([42, :answer])
+    assert_equal [1337], Kalibro::Model.to_objects_array(1337)
+  end
+
+  should 'should save class id' do
+    Kalibro::Model.expects(:request).with(:save_model, {:model=>{}}).returns({:model_id => 42})
+    assert_equal false, @model.save
+    assert_equal NoMethodError, @model.errors[0].class
+  end
 
 end
