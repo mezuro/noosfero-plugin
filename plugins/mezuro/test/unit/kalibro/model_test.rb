@@ -6,6 +6,8 @@ class ModelTest < ActiveSupport::TestCase
 	@model = Kalibro::Model.new({})
 	@client = Object.new
 	@response = Object.new
+	@not_model = Object.new
+	@another_model = Kalibro::Model.new({})
   end
 
   should 'create model from hash' do
@@ -37,6 +39,35 @@ class ModelTest < ActiveSupport::TestCase
     Kalibro::Model.expects(:request).with(:save_model, {:model=>{}}).returns({:model_id => 42})
     assert_equal false, @model.save
     assert_equal NoMethodError, @model.errors[0].class
+  end
+
+  should 'create and save a model' do
+    attributes = {}
+    Kalibro::Model.expects(:new).with(attributes).returns(@model)
+	@model.expects(:save)
+	assert_equal @model, Kalibro::Model.create(attributes)
+  end
+
+  should 'be different because of their classes' do
+    assert !(@model == @not_model)
+  end
+
+  should 'be different because of the value of theirs variables' do
+	@model.expects(:variable_names).returns(["answer"])
+	@model.expects(:send).with("answer").returns(42)
+	@another_model.expects(:send).with("answer").returns("macaco")
+	assert !(@model == @another_model)
+  end
+
+  should 'be equal because they are both empty' do
+    assert (@model == @another_model)
+  end
+
+  should 'be equal because of the value of theirs variables' do
+	@model.expects(:variable_names).returns(["answer"])
+	@model.expects(:send).with("answer").returns(42)
+	@another_model.expects(:send).with("answer").returns(42)
+	assert (@model == @another_model)
   end
 
 end
