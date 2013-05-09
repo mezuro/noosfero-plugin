@@ -34,13 +34,23 @@ class Kalibro::Model
     response.to_hash["#{action}_response".to_sym] # response is a Savon::SOAP::Response, and to_hash is a Savon::SOAP::Response method
   end
 
+  def self.to_object value
+    value.kind_of?(Hash) ? new(value) : value
+  end
+
   def self.to_objects_array value
     array = value.kind_of?(Array) ? value : [value]
     array.each.map { |element| to_object(element) }
   end
 
-  def self.to_object value
-    value.kind_of?(Hash) ? new(value) : value
+  def save
+    begin
+      self.id = self.class.request(save_action, save_params)["#{instance_class_name.underscore}_id".to_sym]
+	  true
+    rescue Exception => exception
+      add_error exception
+      false
+    end
   end
 
   def self.create(attributes={})
@@ -55,16 +65,6 @@ class Kalibro::Model
     else
       raise Kalibro::Errors::RecordNotFound
     end
-  end
-
-  def save
-    begin
-      self.id = self.class.request(save_action, save_params)["#{instance_class_name.underscore}_id".to_sym]
-	    true
-	  rescue Exception => exception
-	    add_error exception
-	    false
-	  end
   end
 
   def destroy
