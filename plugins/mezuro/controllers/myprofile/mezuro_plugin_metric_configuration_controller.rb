@@ -37,7 +37,6 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
   def create
     configuration_content = profile.articles.find(params[:id])
     metric_configuration = Kalibro::MetricConfiguration.create(params[:metric_configuration])
-    
     if metric_configuration_has_errors? metric_configuration
       redirect_to_error_page metric_configuration.errors[0].message
     else

@@ -1,6 +1,6 @@
 class MezuroPluginMyprofileController < ProfileController #MyprofileController?
 
- before_filter :verify_ownership
+  before_filter :verify_ownership, :except => [:error_page]
 
   append_view_path File.join(File.dirname(__FILE__) + '/../../views')
 
@@ -22,11 +22,10 @@ class MezuroPluginMyprofileController < ProfileController #MyprofileController?
   end
 
   def is_owner?
-    raise params.inspect
     unless user.nil?
-      profile_id = profile.articles.find(params[:id]).profile_id
-      owner_id = Profile.find(profile_id).user_id
-      owner_id == user.id
+      owner_id = profile.user_id
+      user_id = user.user_id
+      owner_id == user_id
     else
       false
     end
