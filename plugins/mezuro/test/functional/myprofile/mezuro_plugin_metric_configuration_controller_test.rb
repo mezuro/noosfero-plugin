@@ -41,6 +41,8 @@ class MezuroPluginMetricConfigurationControllerTest < ActionController::TestCase
     @created_metric_configuration = MetricConfigurationFixtures.created_metric_configuration
     @compound_metric_configuration = MetricConfigurationFixtures.sc_metric_configuration
     @compound_metric_configuration_hash = MetricConfigurationFixtures.sc_metric_configuration_hash
+
+    @controller.expects(:verify_ownership).returns(true)
   end
 
   should 'choose metric' do

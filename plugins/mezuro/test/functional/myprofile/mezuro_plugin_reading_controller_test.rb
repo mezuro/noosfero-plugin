@@ -11,6 +11,8 @@ class MezuroPluginReadingControllerTest < ActionController::TestCase
     @response = ActionController::TestResponse.new
     @profile = fast_create(Profile)
 
+    @controller.expects(:verify_ownership).returns(true)
+
     @reading = ReadingFixtures.reading
     @created_reading = ReadingFixtures.created_reading
     @reading_hash = ReadingFixtures.hash

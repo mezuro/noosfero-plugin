@@ -26,10 +26,12 @@ class MezuroPluginRangeControllerTest < ActionController::TestCase
 
     @created_range = RangeFixtures.created_range
     @range = RangeFixtures.range
-    @created_range_hash = RangeFixtures.created_range_hash 
+    @created_range_hash = RangeFixtures.created_range_hash
     @range_hash = RangeFixtures.range_hash
 
     @reading = ReadingFixtures.reading
+
+    @controller.expects(:verify_ownership).returns(true)
   end
 
   should 'set correct attributes to create a new range' do
