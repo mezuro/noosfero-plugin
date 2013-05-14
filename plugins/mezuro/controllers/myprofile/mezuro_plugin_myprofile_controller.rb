@@ -17,7 +17,7 @@ class MezuroPluginMyprofileController < ProfileController #MyprofileController?
 
   def verify_ownership
     unless is_owner?
-      redirect_to_error_page "You are not authorized to access this page."
+      redirect_to_error_page "You are not authorized to access this page"
     end
   end
 
