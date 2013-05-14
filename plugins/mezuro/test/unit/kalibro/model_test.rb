@@ -64,10 +64,20 @@ class ModelTest < ActiveSupport::TestCase
   end
 
   should 'be equal because of the value of theirs variables' do
-	@model.expects(:variable_names).returns(["answer"])
-	@model.expects(:send).with("answer").returns(42)
-	@another_model.expects(:send).with("answer").returns(42)
-	assert (@model == @another_model)
+    @model.expects(:variable_names).returns(["answer"])
+    @model.expects(:send).with("answer").returns(42)
+    @another_model.expects(:send).with("answer").returns(42)
+    assert (@model == @another_model)
+  end
+
+  should 'not exist id 0' do
+    Kalibro::Model.expects(:request).with(:model_exists, { :model_id => 0 }).returns({ :exists => false })
+    assert !Kalibro::Model.exists?(0)
+  end
+
+  should 'exist id 42' do
+    Kalibro::Model.expects(:request).with(:model_exists, { :model_id => 42 }).returns({ :exists => true })
+    assert Kalibro::Model.exists?(42)
   end
 
 end
