@@ -180,7 +180,7 @@ class MezuroPluginMetricConfigurationControllerNotOwnerTest < ActionController::
                           :message => "You are not authorized to access this page"
   end
 
-  should 'not remove metric configuration when not logged in' do
+  should 'not remove native metric configuration when not logged in' do
     get :remove, :profile => @profile.identifier,
         :id => @configuration_content.id,
         :metric_configuration_id => @native_metric_configuration.id
@@ -189,10 +189,29 @@ class MezuroPluginMetricConfigurationControllerNotOwnerTest < ActionController::
                           :message => "You are not authorized to access this page"
   end
 
-  should 'not remove metric configuration when it is not the owner' do
+  should 'not remove native metric configuration when it is not the owner' do
     get :remove, :profile => @profile.identifier,
         :id => @configuration_content.id,
         :metric_configuration_id => @native_metric_configuration.id,
+        :user => @not_owner
+    assert_redirected_to :profile => @profile.identifier, :action => "error_page",
+                          :controller => "mezuro_plugin_myprofile",
+                          :message => "You are not authorized to access this page"
+  end
+
+  should 'not remove compound metric configuration when not logged in' do
+    get :remove, :profile => @profile.identifier,
+        :id => @configuration_content.id,
+        :metric_configuration_id => @compound_metric_configuration.id
+    assert_redirected_to :profile => @profile.identifier, :action => "error_page",
+                          :controller => "mezuro_plugin_myprofile",
+                          :message => "You are not authorized to access this page"
+  end
+
+  should 'not remove compound metric configuration when it is not the owner' do
+    get :remove, :profile => @profile.identifier,
+        :id => @configuration_content.id,
+        :metric_configuration_id => @compound_metric_configuration.id,
         :user => @not_owner
     assert_redirected_to :profile => @profile.identifier, :action => "error_page",
                           :controller => "mezuro_plugin_myprofile",

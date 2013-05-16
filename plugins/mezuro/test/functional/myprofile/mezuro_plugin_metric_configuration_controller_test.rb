@@ -139,12 +139,21 @@ class MezuroPluginMetricConfigurationControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
-  should 'remove metric configuration' do
+  should 'remove native metric configuration' do
     Kalibro::MetricConfiguration.expects(:new).with({:id => @native_metric_configuration.id}).returns(@native_metric_configuration)
     @native_metric_configuration.expects(:destroy).returns()
     get :remove, :profile => @profile.identifier,
                  :id => @configuration_content.id,
                  :metric_configuration_id => @native_metric_configuration.id
+    assert_response :redirect
+  end
+
+  should 'remove compound metric configuration' do
+    Kalibro::MetricConfiguration.expects(:new).with({:id => @native_metric_configuration.id}).returns(@native_metric_configuration)
+    @native_metric_configuration.expects(:destroy).returns()
+    get :remove, :profile => @profile.identifier,
+                 :id => @configuration_content.id,
+                 :metric_configuration_id => @compound_metric_configuration.id
     assert_response :redirect
   end
 
