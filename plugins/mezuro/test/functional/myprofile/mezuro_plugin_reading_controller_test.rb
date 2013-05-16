@@ -11,15 +11,16 @@ class MezuroPluginReadingControllerTest < ActionController::TestCase
     @response = ActionController::TestResponse.new
     @profile = fast_create(Profile)
 
-    @controller.expects(:verify_ownership).returns(true)
-
     @reading = ReadingFixtures.reading
     @created_reading = ReadingFixtures.created_reading
     @reading_hash = ReadingFixtures.hash
+    
     @content = MezuroPlugin::ReadingGroupContent.new(:profile => @profile, :name => name)
     @content.expects(:send_reading_group_to_service).returns(nil)
     @content.stubs(:solr_save)
     @content.save
+
+    @controller.expects(:verify_ownership).returns(true)
   end
 
   should 'set variables to create a new reading' do
