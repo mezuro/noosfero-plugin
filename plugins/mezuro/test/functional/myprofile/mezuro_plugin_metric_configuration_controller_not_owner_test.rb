@@ -1,5 +1,7 @@
 require 'test_helper'
 
+require "#{RAILS_ROOT}/plugins/mezuro/test/fixtures/metric_fixtures"
+require "#{RAILS_ROOT}/plugins/mezuro/test/fixtures/metric_configuration_fixtures"
 require "#{RAILS_ROOT}/plugins/mezuro/test/fixtures/configuration_fixtures"
 
 class MezuroPluginMetricConfigurationControllerNotOwnerTest < ActionController::TestCase
