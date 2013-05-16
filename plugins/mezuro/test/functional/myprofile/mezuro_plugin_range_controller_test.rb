@@ -56,7 +56,7 @@ class MezuroPluginRangeControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  should 'test create instance range' do
+  should 'correctly create instance range' do
     Kalibro::Range.expects(:request).with(:save_range, {
         :metric_configuration_id => @metric_configuration.id,
         :range => @created_range.to_hash}).returns(:range_id => @range.id)
@@ -68,7 +68,7 @@ class MezuroPluginRangeControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  should 'test update range' do
+  should 'correctly update range' do
     Kalibro::Range.expects(:request).with(:save_range, {
         :metric_configuration_id => @metric_configuration.id,
         :range => @range.to_hash}).returns(:range_id => @range.id)
@@ -77,7 +77,7 @@ class MezuroPluginRangeControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  should 'test remove range in native metric configuration' do
+  should 'correctly remove range in native metric configuration' do
     Kalibro::Range.expects(:new).with({:id => @range.id}).returns(@range)
     @range.expects(:destroy).with().returns()
     get :remove, :profile => @profile.identifier, :id => @content.id, :metric_configuration_id => @metric_configuration.id, :range_id => @range.id, :compound => false
