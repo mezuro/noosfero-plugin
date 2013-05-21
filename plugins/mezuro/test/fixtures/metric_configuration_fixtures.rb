@@ -13,6 +13,12 @@ class MetricConfigurationFixtures
     sc.configuration_id = "13"
     sc
   end
+
+  def self.registered_metric_configuration
+    registered = Kalibro::MetricConfiguration.new registered_metric_configuration_hash
+    registered.configuration_id = "42"
+    registered
+  end
   
   def self.created_metric_configuration
     Kalibro::MetricConfiguration.new({
@@ -46,6 +52,21 @@ class MetricConfigurationFixtures
       :id => "42",
       :code => 'sc',
       :metric => MetricFixtures.compound_metric_hash,
+      :weight => "1.0",
+      :aggregation_form => 'AVERAGE',
+      :reading_group_id => "31",
+      :attributes! => {:metric => {
+          'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',
+          'xsi:type' => 'kalibro:metricXml'  }}
+    }
+  end
+
+  def self.registered_metric_configuration_hash
+    {
+      :id => "42",
+      :code => 'registered',
+      :metric => MetricFixtures.amloc_hash,
+      :base_tool_name => "Analizo",
       :weight => "1.0",
       :aggregation_form => 'AVERAGE',
       :reading_group_id => "31",
