@@ -110,14 +110,14 @@ class MezuroPluginMetricConfigurationControllerTest < ActionController::TestCase
   end
 
   should 'create' do
-    Kalibro::MetricConfiguration.expects(:create).returns(@compound_metric_configuration) #FIXME need .with(some_hash), should it mock the request?.
+    Kalibro::MetricConfiguration.expects(:create).returns(@compound_metric_configuration) #FIXME need .with(some_hash).
     get :create, :profile => @profile.identifier, :id => @configuration_content.id, :metric_configuration => @compound_metric_configuration_hash
     assert_response :redirect
   end
 
   should 'update' do
     Kalibro::MetricConfiguration.expects(:metric_configurations_of).with(@configuration_content.configuration_id).returns([@native_metric_configuration])
-    @native_metric_configuration.expects(:update_attributes).returns(true) #FIXME need .with(some_hash), should it mock the request?.
+    @native_metric_configuration.expects(:update_attributes).returns(true) #FIXME need .with(some_hash).
     get :update, :profile => @profile.identifier, :id => @configuration_content.id, :metric_configuration => @native_metric_configuration_hash
     assert_equal @configuration_content, assigns(:configuration_content)
     assert_response :redirect
