@@ -7,10 +7,7 @@ class Kalibro::ReadingGroup < Kalibro::Model
   end
 
   def self.all
-    response = request(:all_reading_groups)[:reading_group]
-    response = [] if response.nil?
-    response = [response] if response.is_a?(Hash) 
-    response.map { |reading_group| new reading_group }
+    create_objects_array_from_hash request(:all_reading_groups)[:reading_group]
   end
   
   def self.reading_group_of( metric_configuration_id )

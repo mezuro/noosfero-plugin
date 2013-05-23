@@ -7,9 +7,6 @@ class Kalibro::Project < Kalibro::Model
   end
 
   def self.all
-    response = request(:all_projects)[:project]
-    response = [] if response.nil?
-    response = [response] if response.is_a?(Hash) 
-    response.map {|project| new project}
+    create_objects_array_from_hash request(:all_projects)[:project]
   end
 end

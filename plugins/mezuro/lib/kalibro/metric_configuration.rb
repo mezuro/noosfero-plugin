@@ -37,10 +37,7 @@ class Kalibro::MetricConfiguration < Kalibro::Model
   end
 
   def self.metric_configurations_of(configuration_id)
-    response = request(:metric_configurations_of, {:configuration_id => configuration_id})[:metric_configuration]
-    response = [] if response.nil?
-    response = [response] if response.is_a?(Hash) 
-    response.map { |metric_configuration| new metric_configuration }
+    create_objects_array_from_hash request(:metric_configurations_of, {:configuration_id => configuration_id})[:metric_configuration]
   end
 
   private

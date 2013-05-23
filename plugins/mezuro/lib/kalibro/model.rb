@@ -88,8 +88,14 @@ class Kalibro::Model
     begin
       self.class.request(destroy_action, destroy_params)
     rescue Exception => exception
-	    add_error exception
+      add_error exception
     end
+  end
+ 
+  def self.create_objects_array_from_hash (response)
+    response = [] if response.nil?
+    response = [response] if response.is_a?(Hash) 
+    response.map { |hash| new hash }
   end
 
   protected
@@ -176,6 +182,7 @@ class Kalibro::Model
   def add_error(exception)
     @errors << exception
   end
+
 
 end
 
