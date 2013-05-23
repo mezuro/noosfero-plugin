@@ -14,6 +14,10 @@ class MezuroPlugin < Noosfero::Plugin
     _("A metric analizer plugin.")
   end
 
+  def stylesheet?
+    true
+  end
+
   def content_types
     if context.profile.is_a?(Community)
       MezuroPlugin::ProjectContent
@@ -25,15 +29,18 @@ class MezuroPlugin < Noosfero::Plugin
 
   def control_panel_buttons
     if context.profile.is_a?(Community)
-      {:title => _('Mezuro project'), :url => {:controller =>  'cms', :action => 'new', :profile => context.profile.identifier, :type => 'MezuroPlugin::ProjectContent'}, :icon => 'mezuro' }
+      make_button('Mezuro project', 'MezuroPlugin::ProjectContent')
     else
-      [{:title => _('Mezuro configuration'), :url => {:controller =>  'cms', :action => 'new', :profile => context.profile.identifier, :type => 'MezuroPlugin::ConfigurationContent'}, :icon => 'mezuro' },
-      {:title => _('Mezuro reading group'), :url => {:controller =>  'cms', :action => 'new', :profile => context.profile.identifier, :type => 'MezuroPlugin::ReadingGroupContent'}, :icon => 'mezuro' }]
+      [make_button('Mezuro configuration', 'MezuroPlugin::ConfigurationContent'),
+       make_button('Mezuro reading group', 'MezuroPlugin::ReadingGroupContent')]
     end
   end
 
-  def stylesheet?
-    true
+  private
+
+  def make_button(title, type)
+    {:title => _(title), :url => {:controller =>  'cms', :action => 'new', :profile => context.profile.identifier, :type => type}, :icon => 'mezuro' }
   end
+
 
 end

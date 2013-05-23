@@ -13,18 +13,7 @@ class Kalibro::Model
     excepts = options[:except].nil? ? [] : options[:except]
     excepts << :errors
     fields.each do |field|
-      if(!excepts.include?(field))
-        field_value = send(field)
-        if !field_value.nil?
-            hash[field] = convert_to_hash(field_value)
-          if field_value.is_a?(Kalibro::Model)
-            hash = {:attributes! => {}}.merge(hash)
-            hash[:attributes!][field.to_sym] = {
-              'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',
-              'xsi:type' => 'kalibro:' + xml_instance_class_name(field_value)  }
-          end
-        end
-      end
+      hash = field_to_hash(field).merge(hash) if !excepts.include?(field)
     end
     hash
   end
@@ -183,6 +172,27 @@ class Kalibro::Model
     @errors << exception
   end
 
+  def get_xml(field, field_value)
+	hash = Hash.new
+    if field_value.is_a?(Kalibro::Model)
+      hash = {:attributes! => {}}
+      hash[:attributes!][field.to_sym] = {
+        'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',
+        'xsi:type' => 'kalibro:' + xml_instance_class_name(field_value)
+	  }
+    end
+    hash
+  end
+
+  def field_to_hash(field)
+    hash = Hash.new
+    field_value = send(field)
+    if !field_value.nil?
+      hash[field] = convert_to_hash(field_value)
+      hash = get_xml(field, field_value).merge(hash)
+    end
+    hash
+  end
 
 end
 
