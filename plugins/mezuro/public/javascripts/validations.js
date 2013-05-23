@@ -61,7 +61,6 @@ function validate_new_repository() {
 function addressAndTypeMatch() {
   var type = jQuery('#repository_type').val();
   var address = jQuery('#repository_address').val();
-
   switch (type) {
     case "BAZAAR": return matchBazaar(address);
     case "CVS": return matchCVS(address);
@@ -73,8 +72,15 @@ function addressAndTypeMatch() {
   }
 }
 
+function matchURL(address) {
+  if(address.match(/^[^ ]*$/)) {
+    return true
+  }
+  return false;
+}
+
 function matchBazaar(address) {
-  if (address.match(/bzr/)) {
+  if (matchURL(address)) {
     return true;
   }
   alert("Address does not match type BAZAAR chosen.");
@@ -82,7 +88,7 @@ function matchBazaar(address) {
 }
 
 function matchCVS(address) {
-  if (address.match(/cvs/)) {
+  if (matchURL(address)) {
     return true;
   }
   alert("Address does not match type CVS chosen.");
@@ -90,7 +96,7 @@ function matchCVS(address) {
 }
 
 function matchGIT(address) {
-  if (address.match(/^(http(s)?:\/\/git(hub)?\.|git:\/\/git(hub\.com|orious\.org)\/|git@git(hub\.com|orious\.org):).+.git$/)) {
+  if (matchURL(address)) {
     return true;
   }
   alert("Address does not match type GIT chosen.");
@@ -98,7 +104,7 @@ function matchGIT(address) {
 }
 
 function matchMercurial(address) {
-  if (address.match(/^(http(s)?|ssh):\/\/.*hg/)) {
+  if (matchURL(address)) {
     return true;
   }
   alert("Address does not match type MERCURIAL chosen.");
@@ -122,7 +128,7 @@ function matchRemoteZIP(address) {
 }
 
 function matchSubversion(address) {
-  if (address.match(/^http(s)?:\/\/.+\/svn.+$/)) {
+  if (matchURL(address)) {
     return true;
   }
   alert("Address does not match type SUBVERSION chosen.");
