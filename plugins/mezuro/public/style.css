@@ -1,4 +1,5 @@
 @import url('colorPicker.css');
+@import url('tooltip.css');
 
 .link {
     cursor: pointer;
