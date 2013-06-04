@@ -14,7 +14,7 @@ sudo -u postgres psql < db_bootstrap.sql
 
 #Kalibro
 USER_HOME=$(eval echo ~${SUDO_USER})
-wget http://ccsl.ime.usp.br/redmine/attachments/download/163/KalibroService-1.0-r5.tar.gz
+wget http://ccsl.ime.usp.br/redmine/attachments/download/162/KalibroService-1.0-r5.tar.gz
 tar -xzf KalibroService-1.0-r5.tar.gz
 mkdir ${USER_HOME}/.kalibro
 mkdir ${USER_HOME}/.kalibro/projects
