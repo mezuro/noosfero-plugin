@@ -9,6 +9,36 @@ jQuery(function (){
   showProcessing();
 });
 
+function processingData(data){
+  return jQuery('#processing').attr('data-' + data);
+}
+
+function showReadyProcessing(content) {
+  jQuery('#processing').html(content);
+}
+
+function showModuleResult(content){
+  jQuery('#module-result').html(content);
+}
+
+function toggle_mezuro(element){
+  jQuery(element).toggle();
+}
+
+function show_metrics(content) {
+  jQuery('#historical-' + metricName).html(content);
+}
+
+function show_grades(content) {
+  jQuery('#historical-grade').html(content);
+}
+
+function sourceNodeToggle(id){
+  var suffixes = ['_hidden', '_plus', '_minus'];
+  for (var i in suffixes)
+    jQuery('#' + id + suffixes[i]).toggle();
+}
+
 function callAction(controller, action, params, callback){
   var profile = processingData('profile');
   var content = processingData('content');
@@ -16,9 +46,42 @@ function callAction(controller, action, params, callback){
   jQuery.get(endpoint, params, callback);
 }
 
+function processingCallback(content){
+  showReadyProcessing(content);
+  var module_result_id = jQuery("#module_result_root_id").attr('module_result_root_id');
+  callAction('module_result', 'module_result', {module_result_id: module_result_id}, showModuleResult);
+}
+
 function showProcessing() {
   repository_id = processingData('repository-id');
   callAction('processing', 'state', {repository_id: repository_id}, showProcessingFor);
+}
+
+function showProcessingAfter(seconds){
+  if (seconds > 0){
+    setTimeout(function() { showProcessingAfter(seconds - 1);}, 10000);
+  } else {
+    showProcessing();
+  }
+}
+
+function showProcessingFor(state){
+  repository_id = processingData('repository-id');
+  if (state == 'ERROR') {
+    jQuery('#processing-state').html('<div style="color:Red">ERROR</div>');
+    callAction('processing', 'processing', {repository_id: repository_id}, showReadyProcessing);
+    showModuleResult('');
+  }
+  else if (state == 'READY') {
+    jQuery('#msg-time').html('');
+    jQuery('#processing-state').html('<div style="color:Green">READY</div>');
+    callAction('processing', 'processing', {repository_id: repository_id}, processingCallback);
+  }
+  else if (state.endsWith("ING")) {
+    jQuery('#processing-state').html('<div style="color:DarkGoldenRod">'+ state +'</div>');
+    jQuery('#msg-time').html("The project analysis may take long. <br/> You'll receive an e-mail when it's ready!");
+    showProcessingAfter(2);
+  }
 }
 
 function display_metric_history() {
@@ -38,16 +101,10 @@ function display_grade_history() {
   return false;
 }
 
-function show_metrics(content) {
-  jQuery('#historical-' + metricName).html(content);
-}
-
-function show_grades(content) {
-  jQuery('#historical-grade').html(content);
-}
-
-function toggle_mezuro(element){
-  jQuery(element).toggle();
+function showLoadingProcess(firstLoad){
+	if(firstLoad)
+  	showReadyProcessing("<img src='/images/loading-small.gif'/>");
+  showModuleResult("<img src='/images/loading-small.gif'/>");
 }
 
 function reloadModule(){
@@ -58,70 +115,13 @@ function reloadModule(){
   return false;
 }
 
-function reloadProcessingWithDate(date){
-	reloadProcessing(date + "T00:00:00+00:00");
-  return false;
-}
-
 function reloadProcessing(date){
   repository_id = processingData('repository-id');
   showLoadingProcess(true);
   callAction('processing', 'processing', {date: date, repository_id: repository_id}, processingCallback);
 }
 
-function processingCallback(content){
-  showReadyProcessing(content);
-  var module_result_id = jQuery("#module_result_root_id").attr('module_result_root_id');
-  callAction('module_result', 'module_result', {module_result_id: module_result_id}, showModuleResult);
-}
-
-function showProcessingFor(state){
-  repository_id = processingData('repository-id');
-  if (state == 'ERROR') {
-    jQuery('#processing-state').html('<div style="color:Red">ERROR</div>');
-    callAction('processing', 'processing', {repository_id: repository_id}, showReadyProcessing);
-    showModuleResult('');
-  }
-  else if (state == 'READY') {
-    jQuery('#msg-time').html('');
-    jQuery('#processing-state').html('<div style="color:Green">READY</div>');
-    callAction('processing', 'processing', {repository_id: repository_id}, processingCallback);
-  }
-  else if (state.endsWith("ING")) {
-    jQuery('#processing-state').html('<div style="color:DarkGoldenRod">'+ state +'</div>');
-    jQuery('#msg-time').html("The project analysis may take long. <br/> You'll receive an e-mail when it's ready!");
-    showProcessingAfter(20);
-  }
-}
-
-function showProcessingAfter(seconds){
-  if (seconds > 0){
-    setTimeout(function() { showProcessingAfter(seconds - 10);}, 10000);
-  } else {
-    showProcessing();
-  }
-}
-
-function showReadyProcessing(content) {
-  jQuery('#processing').html(content);
-}
-
-function showModuleResult(content){
-    jQuery('#module-result').html(content);
-}
-
-function processingData(data){
-  return jQuery('#processing').attr('data-' + data);
-}
-
-function showLoadingProcess(firstLoad){
-	if(firstLoad)
-  	showReadyProcessing("<img src='/images/loading-small.gif'/>");
-  showModuleResult("<img src='/images/loading-small.gif'/>");
-}
-
-function sourceNodeToggle(id){
-  var suffixes = ['_hidden', '_plus', '_minus'];
-  for (var i in suffixes)
-    jQuery('#' + id + suffixes[i]).toggle();
+function reloadProcessingWithDate(date){
+	reloadProcessing(date + "T00:00:00+00:00");
+  return false;
 }
