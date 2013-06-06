@@ -3,9 +3,9 @@
 
 <hr/>
 <div class="zoomable-image">
-<table style="width: 100%">
+<table id="module-result" style="width: 100%">
   <%= render :partial => "metric_results", :locals => {:metric_results => @metric_results, :module_result_id => @module_result.id} %>
-  <tfoot>
+<!--  <tfoot>
     <tr>
       <td colspan = "3">
         <div id='historical-grade' style="display: none;"></div>
@@ -19,6 +19,6 @@
         </a>
       </td>
     </tr>
-  </tfoot>
+  </tfoot> -->
 </table>
 </div>

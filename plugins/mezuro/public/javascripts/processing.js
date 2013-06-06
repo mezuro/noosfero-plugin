@@ -107,7 +107,8 @@ function showReadyProcessing(content) {
 }
 
 function showModuleResult(content){
-    jQuery('#module-result').html(content);
+    jQuery('div#module-result').html(content);
+    jQuery('table#module-result').dataTable();
 }
 
 function processingData(data){
