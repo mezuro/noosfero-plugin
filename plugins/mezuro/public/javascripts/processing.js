@@ -9,6 +9,13 @@ jQuery(function (){
   showProcessing();
 });
 
+function callAction(controller, action, params, callback){
+  var profile = processingData('profile');
+  var content = processingData('content');
+  var endpoint = '/profile/' + profile + '/plugin/mezuro/' + controller + '/' + action + '/' + content;
+  jQuery.get(endpoint, params, callback);
+}
+
 function showProcessing() {
   repository_id = processingData('repository-id');
   callAction('processing', 'state', {repository_id: repository_id}, showProcessingFor);
@@ -41,7 +48,6 @@ function show_grades(content) {
 
 function toggle_mezuro(element){
   jQuery(element).toggle();
-  return false;
 }
 
 function reloadModule(){
@@ -60,13 +66,13 @@ function reloadProcessingWithDate(date){
 function reloadProcessing(date){
   repository_id = processingData('repository-id');
   showLoadingProcess(true);
+  callAction('processing', 'processing', {date: date, repository_id: repository_id}, processingCallback);
+}
 
-  callAction('processing', 'processing', {date: date, repository_id: repository_id}, function(content){
-                                                                            showReadyProcessing(content);
-                                                                            var module_result_id = jQuery("#module_result_root_id").attr('module_result_root_id');
-                                                                            callAction('module_result', 'module_result', {module_result_id: module_result_id}, showModuleResult);
-                                                                         }
-            );
+function processingCallback(content){
+  showReadyProcessing(content);
+  var module_result_id = jQuery("#module_result_root_id").attr('module_result_root_id');
+  callAction('module_result', 'module_result', {module_result_id: module_result_id}, showModuleResult);
 }
 
 function showProcessingFor(state){
@@ -79,12 +85,7 @@ function showProcessingFor(state){
   else if (state == 'READY') {
     jQuery('#msg-time').html('');
     jQuery('#processing-state').html('<div style="color:Green">READY</div>');
-    callAction('processing', 'processing', {repository_id: repository_id}, function(content){
-                                                                              showReadyProcessing(content);
-                                                                              var module_result_id = jQuery("#module_result_root_id").attr('module_result_root_id');
-                                                                              callAction('module_result', 'module_result', {module_result_id: module_result_id}, showModuleResult);
-                                                                           }
-              );
+    callAction('processing', 'processing', {repository_id: repository_id}, processingCallback);
   }
   else if (state.endsWith("ING")) {
     jQuery('#processing-state').html('<div style="color:DarkGoldenRod">'+ state +'</div>');
@@ -107,13 +108,6 @@ function showReadyProcessing(content) {
 
 function showModuleResult(content){
     jQuery('#module-result').html(content);
-}
-
-function callAction(controller, action, params, callback){
-  var profile = processingData('profile');
-  var content = processingData('content');
-  var endpoint = '/profile/' + profile + '/plugin/mezuro/' + controller + '/' + action + '/' + content;
-  jQuery.get(endpoint, params, callback);
 }
 
 function processingData(data){
