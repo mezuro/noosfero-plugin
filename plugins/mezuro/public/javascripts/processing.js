@@ -108,7 +108,7 @@ function showReadyProcessing(content) {
 
 function showModuleResult(content){
     jQuery('div#module-result').html(content);
-    jQuery('table#module-result').dataTable();
+    jQuery('table#module-result').dataTable({"sDom" : "ft"}); //{"sDom" : "tf"} shows just the table and the filtering
 }
 
 function processingData(data){
