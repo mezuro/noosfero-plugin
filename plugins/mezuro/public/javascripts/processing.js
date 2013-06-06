@@ -1,5 +1,8 @@
 var processingTree = false;
 var metricName;
+var displayed_charts = [];
+var moduleResults =  null;
+
 jQuery(function (){
   jQuery('.source-tree-link').live("click", reloadModule);
   jQuery('[show-metric-history]').live("click", display_metric_history);
@@ -22,12 +25,25 @@ function showProcessing() {
 }
 
 function display_metric_history() {
+  var nTr = this.parentNode.parentNode; //gets the clicked TR
+  var trIndex = jQuery.inArray( nTr, displayed_charts );
   var module_result_id = jQuery(this).attr('data-module-id');
   var formatted_name = jQuery(this).attr('show-metric-history');
   var metric_name = jQuery(this).attr('data-metric-name');
-  toggle_mezuro("." + formatted_name);
+
+  if ( trIndex === -1 ) {//The element was not found in the displayed_charts Array
+    moduleResults.fnOpen( nTr, function() {}, 'metric_history_'+formatted_name ); // So we create a new row after the clicked one
+    displayed_charts.push( nTr ); // Finally we add it to the Array!
+  }
+  else { //Otherwise, we remove the row
+    moduleResults.fnClose( nTr );
+    displayed_charts.splice( trIndex, 1 );
+  }
+
   metricName = formatted_name;
+  jQuery('.metric_history_' + metricName).html("<img src='/images/loading-small.gif'/>");
   callAction('module_result', 'metric_result_history', {metric_name: metric_name, module_result_id: module_result_id}, show_metrics);
+
   return false;
 }
 
@@ -39,7 +55,7 @@ function display_grade_history() {
 }
 
 function show_metrics(content) {
-  jQuery('#historical-' + metricName).html(content);
+  jQuery('.metric_history_' + metricName).html(content);
 }
 
 function show_grades(content) {
@@ -108,7 +124,7 @@ function showReadyProcessing(content) {
 
 function showModuleResult(content){
     jQuery('div#module-result').html(content);
-    jQuery('table#module-result').dataTable({"sDom" : "ft"}); //{"sDom" : "tf"} shows just the table and the filtering
+    moduleResults = jQuery('table#module-result').dataTable({"sDom" : "ft"}); //{"sDom" : "tf"} shows just the table and the filtering
 }
 
 function processingData(data){
