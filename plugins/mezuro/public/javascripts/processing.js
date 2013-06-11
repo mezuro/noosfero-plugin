@@ -106,13 +106,13 @@ function showProcessingFor(state){
   else if (state.endsWith("ING")) {
     jQuery('#processing-state').html('<div style="color:DarkGoldenRod">'+ state +'</div>');
     jQuery('#msg-time').html("The project analysis may take long. <br/> You'll receive an e-mail when it's ready!");
-    showProcessingAfter(20);
+    showProcessingAfter(2);
   }
 }
 
 function showProcessingAfter(seconds){
   if (seconds > 0){
-    setTimeout(function() { showProcessingAfter(seconds - 10);}, 10000);
+    setTimeout(function() { showProcessingAfter(seconds - 1);}, 1000);
   } else {
     showProcessing();
   }
