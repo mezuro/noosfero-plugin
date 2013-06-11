@@ -35,3 +35,20 @@ a:link,active,visited .ancestor{
   .controller-profile_editor .msie6 a.control-panel-mezuro {
   background-image: url(/plugins/mezuro/icons/mezuro.png)
 }
+
+table#module-result {
+  width: 100%;
+}
+
+table#module-result .metric-name{
+  width: 74%;
+}
+
+table#module-result tr{
+  float: none;
+}
+
+table#module-result th:hover{
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
