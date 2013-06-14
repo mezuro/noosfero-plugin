@@ -124,7 +124,7 @@ function showReadyProcessing(content) {
 
 function showModuleResult(content){
     jQuery('div#module-result').html(content);
-    moduleResults = jQuery('table#module-result').dataTable({"sDom" : "ft"}); //{"sDom" : "tf"} shows just the table and the filtering
+    moduleResults = jQuery('table#module-result').dataTable({"sDom" : "ft", "iDisplayLength" : -1}); //{"sDom" : "tf", "iDisplayLength" : -1} shows just the table and the filtering and removes the row limit
 }
 
 function processingData(data){
