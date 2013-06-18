@@ -17,16 +17,18 @@
       <tr>
         <td class="metric_name"><a href="#" show-metric-history="<%= formatted_name %>" data-metric-name="<%= metric_name %>" data-module-id="<%= @module_result.id %>"><%= metric_name %></a></td>
         <td><%= MezuroPlugin::Helpers::ContentViewerHelper.format_grade(metric_result.value) %></td>
-        <td><%= metric_configuration_snapshot.weight %></td>
+        <td id='snapshot_weight'><%= metric_configuration_snapshot.weight %></td>
       <% range_snapshots.each do |range_snapshot| %>
         <% if range_snapshot.beginning <= metric_result.value and range_snapshot.end > metric_result.value %>
-        <td style="background-color: #<%= range_snapshot.color %>" 
-        onmouseover="tooltip.show('<%=  if range_snapshot.comments.nil?
-                                          %q{No comments available}
-                                        else
-                                          range_snapshot.comments
-                                        end %>');" onmouseout="tooltip.hide()">
-            <%= range_snapshot.label %>
+        <td>
+          <div style="background-color: #<%= range_snapshot.color %>" id='range_snapshot' 
+          onmouseover="tooltip.show('<%=  if range_snapshot.comments.nil?
+                                            %q{No comments available}
+                                          else
+                                            range_snapshot.comments
+                                          end %>');" onmouseout="tooltip.hide()"> 
+            <span id='range_snapshot_text'> <%= range_snapshot.label %> </span>
+          </div>
         </td>
       </tr>
         <% end %>
