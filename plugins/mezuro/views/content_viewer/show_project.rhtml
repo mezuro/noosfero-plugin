@@ -39,6 +39,11 @@
   																			:action => "destroy", 
   																			:id => @page.id,
   																			:repository_id => repository.id}, :class=>"button with-text icon-delete" %></td>
+      <td ><%= link_to _('Notify Me'), {:controller => "mezuro_plugin_repository_observer", 
+                                        :profile => @page.profile.identifier, 
+                                        :action => "new", 
+                                        :id => @page.id,
+                                        :repository_id => repository.id} %></td>
   	</tr>
   <% end %>
   </table>

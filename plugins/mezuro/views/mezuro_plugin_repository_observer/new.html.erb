@@ -1,0 +1,13 @@
+
+<% form_for :repository_observer, :url => {:action =>"save", :controller => "mezuro_plugin_repository_observer"},  :method => :get do |f| %>
+
+  <%= hidden_field_tag :id, @project_content.id %>
+  <%= f.hidden_field(:repository_id, :value => @repository_id) %>
+
+  <%= required labelled_form_field _('Name'), f.text_field(:name) %> 
+
+  <%= required labelled_form_field _('E-mail'), f.text_field(:email) %>
+
+  <p> <%= f.submit "Confirm" %> </p>
+
+<% end %>
