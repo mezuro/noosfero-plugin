@@ -5,6 +5,6 @@ class ProcessingObserverFixtures
   end
 
   def self.processing_observer_hash
-    {:name => 'Owner', :email => "owner@email.com"}
+    {:name => 'Owner', :email => "owner@email.com", :repository_id => "42"}
   end
 end

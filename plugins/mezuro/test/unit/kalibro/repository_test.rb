@@ -42,24 +42,6 @@ class RepositoryTest < ActiveSupport::TestCase
     assert_equal id_from_kalibro, @created_repository.id
   end
 
-  should 'send owner data to kalibro when repository has send mail field checked' do
-    id_from_kalibro = 1
-    Kalibro::Repository.expects(:request).with(:save_repository, {:repository => @created_repository.to_hash, :project_id => @created_repository.project_id}).returns(:repository_id => id_from_kalibro)
-    assert @created_repository.save
-    processing_observer = ProcessingObserverFixtures.processing_observer
-    Kalibro::Repository.expects(:request).with(:save_processing_observer, 
-          {
-            :processing_observer => processing_observer,
-            :repository_id => id_from_kalibro
-          })
-    assert @created_repository.save
-    #WIP
-  end
-
-  should 'delete owner data from kalibro when repository has send mail field not checked' do
-    #TODO
-  end
-
   should 'return false when repository is not saved successfully' do
     Kalibro::Repository.expects(:request).with(:save_repository, {:repository => @created_repository.to_hash, :project_id => @created_repository.project_id}).raises(Exception.new)
     assert !(@created_repository.save)
