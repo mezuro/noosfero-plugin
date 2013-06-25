@@ -274,3 +274,16 @@ Feature: Repository
     Then I should not see the edit link for "My Name" repository
     And I should not see the remove link for "My Name" repository
 
+  Scenario: I ask to be notified about a repository
+    Given I have a Mezuro repository with the following data
+      | name               | My Name                                                         |
+      | description        | My Description                                                  |
+      | license            | ISC License (ISC)                                               |
+      | process_period     | Not Periodically                                                |
+      | type               | GIT                                                             |
+      | address            | https://github.com/user/project.git                             |
+      | configuration_id   | Sample Configuration                                            |
+    And I am on article "Sample Project"
+    And I follow the notify link for "My Name" repository
+    Then I should see "Name"
+    And I should see "E-mail"
