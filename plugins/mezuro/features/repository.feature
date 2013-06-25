@@ -285,5 +285,10 @@ Feature: Repository
       | configuration_id   | Sample Configuration                                            |
     And I am on article "Sample Project"
     And I follow the notify link for "My Name" repository
-    Then I should see "Name"
+    And I should see "Name"
     And I should see "E-mail"
+    When I fill the fields with the new following data
+      | repository_observer_name      | Joao                                                 |
+      | repository_observer_email     | joaosilva@foo.bar                                    |
+    And I press "Confirm"
+    Then I should see "My Name"
