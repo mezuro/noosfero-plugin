@@ -185,3 +185,10 @@ function validate_new_range_configuration(event) {
   }
   return true;
 }
+
+function validate_email(email){
+  if (email.match(/^\w+@[a-zA-Z_]+?(\.[a-zA-Z]{2,4}){1,2}$/))
+    return true;
+  else
+    return false;
+}
