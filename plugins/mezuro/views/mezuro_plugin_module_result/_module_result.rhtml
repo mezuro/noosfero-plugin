@@ -1,10 +1,14 @@
 <%= render :partial => "source_tree", :locals => {:module_result => @module_result} %>
 <h5><%= _"Metric results for: #{MezuroPlugin::Helpers::ModuleResultHelper.module_name(@module_result.module.name)} (#{@module_result.module.granularity})" %> </h5>
 
+<script type="text/javascript" language="javascript" src="/plugins/mezuro/javascripts/tooltip.js"></script>
+<script type="text/javascript" language="javascript" src="/plugins/mezuro/javascripts/highcharts.js"></script>
+<script type="text/javascript" language="javascript" src="/plugins/mezuro/javascripts/generate.chart.js"></script>
+
 <hr/>
 <div class="zoomable-image">
 <table id="module-result" style="width: 100%">
-  <%= render :partial => "metric_results", :locals => {:metric_results => @metric_results, :module_result_id => @module_result.id} %>
+  <%= render :partial => "metric_results", :locals => {:metric_results => @metric_results, :module_result_id => @module_result.id, :metric_id => @metric_id} %>
 </table>
 <table>
   <tr>

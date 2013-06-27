@@ -1,7 +1,6 @@
 
-function generateChart(score_history) {
-
-        jQuery('.chart-container').highcharts({
+function generateChart(div_id) {
+        jQuery('.'+div_id).highcharts({
             chart: {
                 type: 'area'
             },
@@ -72,6 +71,5 @@ function generateChart(score_history) {
         });
     }
 
-generateChart(2);
 
 
