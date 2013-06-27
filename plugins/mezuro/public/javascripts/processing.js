@@ -30,6 +30,7 @@ function display_metric_history() {
   var module_result_id = jQuery(this).attr('data-module-id');
   var formatted_name = jQuery(this).attr('show-metric-history');
   var metric_name = jQuery(this).attr('data-metric-name');
+  var metric_id = jQuery(this).attr('data-metric-id');
 
   if ( trIndex === -1 ) {//The element was not found in the displayed_charts Array
     moduleResults.fnOpen( nTr, function() {}, 'metric_history_'+formatted_name ); // So we create a new row after the clicked one
@@ -42,7 +43,7 @@ function display_metric_history() {
 
   metricName = formatted_name;
   jQuery('.metric_history_' + metricName).html("<img src='/images/loading-small.gif'/>");
-  callAction('module_result', 'metric_result_history', {metric_name: metric_name, module_result_id: module_result_id}, show_metrics);
+  callAction('module_result', 'metric_result_history', {metric_name: metric_name, module_result_id: module_result_id, metric_id: metric_id}, show_metrics );
 
   return false;
 }

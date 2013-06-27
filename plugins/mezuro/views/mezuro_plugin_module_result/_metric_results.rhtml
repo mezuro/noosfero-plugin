@@ -15,7 +15,7 @@
     <% formatted_name = metric_name.delete("() ") %>
     <% if !range_snapshots.nil? %>
       <tr>
-        <td class="metric_name"><a href="#" show-metric-history="<%= formatted_name %>" data-metric-name="<%= metric_name %>" data-module-id="<%= @module_result.id %>"><%= metric_name %></a></td>
+        <td class="metric_name"><a href="#" show-metric-history="<%= formatted_name %>" data-metric-name="<%= metric_name %>" data-metric-id="<%= metric_id %>" data-module-id="<%= @module_result.id %>"><%= metric_name %></a></td>
         <td><%= MezuroPlugin::Helpers::ContentViewerHelper.format_grade(metric_result.value) %></td>
         <td id='snapshot_weight'><%= metric_configuration_snapshot.weight %></td>
       <% range_snapshots.each do |range_snapshot| %>
