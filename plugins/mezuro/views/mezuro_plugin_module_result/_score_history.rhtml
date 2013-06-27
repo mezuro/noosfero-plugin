@@ -2,7 +2,12 @@
 <div class="<%= @div_id %>" style="width: 100%; height: 300px; margin: 0 auto"> </div>
 
 <script type="text/javascript" >
-  generateChart("<%= @div_id %>");  
+  var data_size = <%= @history.length %>;
+  var data = [];
+  <% @history.each do |score_data| %>
+    data.push(<%= score_data.result %>);
+  <% end %>
+  generateChart("<%= @div_id %>", "Metric History", "<%= @data_name %>", data);  
 </script>
 
 
