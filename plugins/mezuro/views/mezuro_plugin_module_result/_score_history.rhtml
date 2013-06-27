@@ -4,10 +4,17 @@
 <script type="text/javascript" >
   var data_size = <%= @history.length %>;
   var data = [];
-  <% @history.each do |score_data| %>
-    data.push(<%= score_data.result %>);
+  var start_date = <%= @history.first.date.yday %>;
+  <% @history.each_index do |i| %>    
+    <% if i > 0 %>
+      <% date_diff = @history[i].date - @history[i-1].date %> 
+      <% for j in 1..(date_diff.to_i) do %>        
+        data.push(<%= @history[i-1].result %>);
+      <% end %>
+    <% end %>
+    data.push(<%= @history[i].result %>);
   <% end %>
-  generateChart("<%= @div_id %>", "<%= @chart_title %>", "<%= @data_name %>", data);  
+  generateChart("<%= @div_id %>", "<%= @chart_title %>", "<%= @data_name %>", data, start_date);  
 </script>
 
 

@@ -1,5 +1,5 @@
 
-function generateChart(div_id, title, data_name, data) {
+function generateChart(div_id, title, data_name, data, start_date) {
         jQuery('.'+div_id).highcharts({
             chart: {
                 type: 'area'
@@ -12,13 +12,14 @@ function generateChart(div_id, title, data_name, data) {
             },
             xAxis: {
                 title: {
-                    text: 'Number of Analysis'
+                    text: 'Dates'
                 },
                 labels: {
                     formatter: function() {
                         return this.value; // clean, unformatted number for year
                     }
                 }
+            //minorTickInterval: 0.1
             },
             yAxis: {
                 title: {
@@ -31,11 +32,11 @@ function generateChart(div_id, title, data_name, data) {
                 }
             },
             tooltip: {
-                pointFormat: 'The value of '+data_name+' was <b>{point.y:,.2f}</b><br/>in the {point.x}th analysis'
+                pointFormat: 'The value of '+data_name+' was <b>{point.y:,.2f}</b><br/>in {point.x}'
             },
             plotOptions: {
                 area: {
-                    pointStart: 1,
+                    pointStart: parseInt(start_date, 10),
                     marker: {
                         enabled: false,
                         symbol: 'circle',
