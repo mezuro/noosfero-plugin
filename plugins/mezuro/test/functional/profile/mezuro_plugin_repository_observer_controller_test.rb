@@ -1,6 +1,6 @@
 require 'test_helper'
 
-require "#{RAILS_ROOT}/plugins/mezuro/test/fixtures/processing_observer_fixtures"
+require "#{RAILS_ROOT}/plugins/mezuro/test/fixtures/repository_observer_fixtures"
 
 class MezuroPluginRepositoryObserverControllerTest < ActionController::TestCase
 
@@ -28,10 +28,10 @@ class MezuroPluginRepositoryObserverControllerTest < ActionController::TestCase
   end
 
   should 'save repository observer and redirect back to repository page' do
-    fixture = ProcessingObserverFixtures
-    repository_observer = fixture.processing_observer
+    fixture = RepositoryObserverFixtures
+    repository_observer = fixture.repository_observer
 
-    Kalibro::ProcessingObserver.expects(:new).with(fixture.processing_observer_hash).returns(repository_observer)
+    Kalibro::RepositoryObserver.expects(:new).with(fixture.repository_observer_hash).returns(repository_observer)
     repository_observer.expects(:save).returns(true)
 
     get :save, :profile => @profile.identifier, :id => @project_content.id,  :repository_id => repository_observer.repository_id, :repository_observer => repository_observer.to_hash
