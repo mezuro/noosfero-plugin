@@ -12,7 +12,7 @@ class MezuroPluginRepositoryObserverController < MezuroPluginProfileController
   def save
     project_content = profile.articles.find(params[:id])
     repository_id = params[:repository_observer][:repository_id]
-    repository_observer = Kalibro::ProcessingObserver.new({
+    repository_observer = Kalibro::RepositoryObserver.new({
       :name => params[:repository_observer][:name],
       :email => params[:repository_observer][:email],
       :repository_id => repository_id
