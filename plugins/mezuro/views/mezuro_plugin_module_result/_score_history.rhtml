@@ -7,7 +7,7 @@
   <% @history.each do |score_data| %>
     data.push(<%= score_data.result %>);
   <% end %>
-  generateChart("<%= @div_id %>", "Metric History", "<%= @data_name %>", data);  
+  generateChart("<%= @div_id %>", "<%= @chart_title %>", "<%= @data_name %>", data);  
 </script>
 
 

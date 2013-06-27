@@ -13,6 +13,7 @@ class MezuroPluginModuleResultController < MezuroPluginProfileController
     @history = Kalibro::MetricResult.history_of(params[:metric_name], params[:module_result_id].to_i)
     @div_id = "metric-chart-"+params[:metric_id]
     @data_name = params[:metric_name]
+    @chart_title = "Metric History"
     render :partial => 'score_history'
   end
 
@@ -20,6 +21,7 @@ class MezuroPluginModuleResultController < MezuroPluginProfileController
     @history = Kalibro::ModuleResult.history_of(params[:module_result_id].to_i)
     @div_id = "grade-chart"
     @data_name = "Grade"
+    @chart_title = "Grade History"
     render :partial => 'score_history'
   end
 
