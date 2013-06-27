@@ -1,6 +1,6 @@
 class Kalibro::Repository < Kalibro::Model
   
-  attr_accessor :id, :name, :description, :license, :process_period, :type, :address, :configuration_id, :project_id
+  attr_accessor :id, :name, :description, :license, :process_period, :type, :address, :configuration_id, :project_id, :send_email
 
   def self.repository_types
     request(:supported_repository_types)[:supported_type].to_a

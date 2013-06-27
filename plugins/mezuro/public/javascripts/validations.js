@@ -3,6 +3,7 @@ jQuery(function (){
   jQuery('#metric_configuration_submit').live("click", validate_metric_configuration);
   jQuery('#repository_submit').live("click", validate_new_repository);
   jQuery('#reading_submit').live("click", validate_new_reading);
+  jQuery('#repository_observer_submit').live("click", validate_new_repository_observer);
 });
 
 function validate_code(code){
@@ -56,6 +57,20 @@ function validate_new_repository() {
     return addressAndTypeMatch();
   }
   return false;
+}
+
+function validate_new_repository_observer() {
+  var name = jQuery('#repository_observer_name').val();
+  var email = jQuery('#repository_observer_email').val();
+  if (is_null(name) || is_null(email)) {
+      alert("Please fill all fields marked with (*).");
+      return false;
+  }
+  if (!validate_email(email)) {
+    alert("Please fill a valid email.");
+    return false;
+  }
+  return true; 
 }
 
 function addressAndTypeMatch() {
@@ -184,4 +199,11 @@ function validate_new_range_configuration(event) {
       }
   }
   return true;
+}
+
+function validate_email(email){
+  if (email.match(/^\w+@[a-zA-Z_]+?(\.[a-zA-Z]{2,4}){1,2}$/))
+    return true;
+  else
+    return false;
 }

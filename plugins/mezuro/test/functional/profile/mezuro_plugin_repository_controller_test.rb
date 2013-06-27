@@ -141,4 +141,5 @@ class MezuroPluginRepositoryControllerTest < ActionController::TestCase
     #TODO verify if it is redirected to the right page
     assert_response :redirect
   end
+
 end
