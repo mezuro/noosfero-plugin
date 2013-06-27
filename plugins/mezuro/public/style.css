@@ -57,7 +57,7 @@ table#module-result .even{
   background-color: #F8F8F8;
 }
 
-table#module-result #range_snapshot{
+table#module-result #range_snapshot, #range_color_box{
   border: 1px solid grey;
   text-align: center;
   height: 100%;
