@@ -14,8 +14,8 @@ sudo -u postgres psql < db_bootstrap.sql
 
 #Kalibro
 USER_HOME=$(eval echo ~${SUDO_USER})
-wget http://ccsl.ime.usp.br/redmine/attachments/download/162/KalibroService-1.0-r5.tar.gz
-tar -xzf KalibroService-1.0-r5.tar.gz
+wget http://ccsl.ime.usp.br/redmine/attachments/download/162/KalibroService-1.0-r6.tar.gz
+tar -xzf KalibroService-1.0-r6.tar.gz
 mkdir ${USER_HOME}/.kalibro
 mkdir ${USER_HOME}/.kalibro/projects
 printf "serviceSide: SERVER\nclientSettings:\n  serviceAddress: \"http://localhost:8080/KalibroService/\"\nserverSettings:\n  loadDirectory: /usr/share/tomcat6/.kalibro/projects\n  databaseSettings:\n    databaseType: POSTGRESQL\n    jdbcUrl: \"jdbc:postgresql://localhost:5432/kalibro\"\n    username: \"kalibro\"\n    password: \"kalibro\"\n" >> ${USER_HOME}/.kalibro/kalibro.settings
