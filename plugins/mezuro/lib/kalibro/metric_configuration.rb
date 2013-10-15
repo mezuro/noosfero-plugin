@@ -27,11 +27,17 @@ class Kalibro::MetricConfiguration < Kalibro::Model
     super :except => [:configuration_id]
   end
 
+  def self.find(id)
+    #TODO: on future versions of Kalibro this begin/rescue will be unnecessary
+    begin
+      new request(:get_metric_configuration, {:metric_configuration_id => id})[:metric_configuration]
+    rescue Savon::SOAP::Fault
+      nil
+    end
+  end
+
   def self.metric_configurations_of(configuration_id)
-    response = request(:metric_configurations_of, {:configuration_id => configuration_id})[:metric_configuration]
-    response = [] if response.nil?
-    response = [response] if response.is_a?(Hash) 
-    response.map { |metric_configuration| new metric_configuration }
+    create_objects_array_from_hash request(:metric_configurations_of, {:configuration_id => configuration_id})[:metric_configuration]
   end
 
   private

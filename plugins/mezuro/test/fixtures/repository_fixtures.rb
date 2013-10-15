@@ -13,12 +13,38 @@ class RepositoryFixtures
       :type => 'SUBVERSION',
       :address => 'https://qt-calculator.svn.sourceforge.net/svnroot/qt-calculator',
       :configuration_id => "31",
-      :project_id => "32"
+      :project_id => "32",
+      :send_email => "false"
     })
   end
 
   def self.repository_hash
-    {:id => "42", :name => "test repository", :description => "test description", :license => "GPL", :process_period => "1", :type => 'SUBVERSION', :address => "https://qt-calculator.svn.sourceforge.net/svnroot/qt-calculator", :configuration_id => "31", :project_id => "32"}
+    {
+      :id => "42",
+      :name => "test repository",
+      :description => "test description",
+      :license => "GPL",
+      :process_period => "1",
+      :type => 'SUBVERSION',
+      :address => "https://qt-calculator.svn.sourceforge.net/svnroot/qt-calculator",
+      :configuration_id => "31",
+      :project_id => "32",
+      :send_email => "false"
+    }
+  end
+
+  def self.created_repository_with_mail_notify
+    Kalibro::Repository.new({
+      :name => "test created repository",
+      :description => "test description",
+      :license => "GPL",
+      :process_period => "1",
+      :type => 'SUBVERSION',
+      :address => 'https://qt-calculator.svn.sourceforge.net/svnroot/qt-calculator',
+      :configuration_id => "31",
+      :project_id => "32",
+      :send_email => "true"
+    })
   end
 
   def self.types

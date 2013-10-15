@@ -58,8 +58,14 @@ class MezuroPluginRepositoryController < MezuroPluginProfileController
     configurations = Kalibro::Configuration.all
     configurations = [] if (configurations.nil?)
     @configuration_select = configurations.map do |configuration|
-      [configuration.name,configuration.id] 
+      [configuration.name,configuration.id]
     end
+    @configuration_select.delete_if do |configuration|
+      metric_configurations =
+        Kalibro::MetricConfiguration.metric_configurations_of(configuration[1])
+      metric_configurations.empty?
+    end
+    
   end
 
 end

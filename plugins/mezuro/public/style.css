@@ -1,16 +1,16 @@
 @import url('colorPicker.css');
 
 .link {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .source-tree{
-	background: #e7e7e7;
-	border: groove 1px #666;
+  background: #e7e7e7;
+  border: groove 1px #666;
 }
 
 .icon {
-        width: 20px;
+width: 20px;
 }
 
 .source-tree-text{
@@ -35,3 +35,39 @@ a:link,active,visited .ancestor{
   .controller-profile_editor .msie6 a.control-panel-mezuro {
   background-image: url(/plugins/mezuro/icons/mezuro.png)
 }
+
+table#module-result {
+  width: 100%;
+}
+
+table#module-result .metric-name{
+  width: 74%;
+}
+
+table#module-result tr{
+  float: none;
+}
+
+table#module-result th:hover{
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+table#module-result .even{
+  background-color: #F8F8F8;
+}
+
+table#module-result #range_snapshot, #range_color_box{
+  border: 1px solid grey;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+}
+
+table#module-result #range_snapshot_text{
+  position: relative;
+  top: 20%;
+  font-weight: bold;
+}
+

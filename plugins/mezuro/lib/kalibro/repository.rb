@@ -1,16 +1,13 @@
 class Kalibro::Repository < Kalibro::Model
   
-  attr_accessor :id, :name, :description, :license, :process_period, :type, :address, :configuration_id, :project_id
+  attr_accessor :id, :name, :description, :license, :process_period, :type, :address, :configuration_id, :project_id, :send_email
 
   def self.repository_types
     request(:supported_repository_types)[:supported_type].to_a
   end
   
   def self.repositories_of(project_id)
-    response = request(:repositories_of, {:project_id => project_id})[:repository]
-    response = [] if response.nil?
-    response = [response] if response.is_a?(Hash) 
-    response.map {|repository| new repository}
+    create_objects_array_from_hash request(:repositories_of, {:project_id => project_id})[:repository]
   end
 
   def id=(value)

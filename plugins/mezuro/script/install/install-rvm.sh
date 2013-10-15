@@ -2,7 +2,7 @@
 
 #Ubuntu Package Dependencies
 sudo apt-get update
-sudo apt-get install build-essential curl libxslt1-dev git git-core tango-icon-theme sqlite3 libsqlite3-dev patch bzip2 openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev libgdbm-dev ncurses-dev automake libtool bison subversion pkg-config libffi-dev openjdk-6-jre
+sudo apt-get install build-essential curl libxslt1-dev git git-core tango-icon-theme sqlite3 libsqlite3-dev patch bzip2 openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev libgdbm-dev ncurses-dev automake libtool bison subversion pkg-config libffi-dev openjdk-6-jre firefox
 
 #RVM Installation for Ubuntu 12.10
 curl -L https://get.rvm.io | bash -s stable --autolibs=enabled --version 1.19.0

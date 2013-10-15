@@ -7,10 +7,7 @@ class Kalibro::Configuration < Kalibro::Model
   end
 
   def self.all
-    response = request(:all_configurations)[:configuration]
-    response = [] if response.nil?
-    response = [response] if response.is_a?(Hash) 
-    response.map {|configuration| new configuration}
+    create_objects_array_from_hash request(:all_configurations)[:configuration]
   end
 
 end

@@ -34,10 +34,7 @@ class Kalibro::MetricResult < Kalibro::Model
   end
 
   def self.metric_results_of(module_result_id)
-    response = request(:metric_results_of, {:module_result_id => module_result_id})[:metric_result]
-    response = [] if response.nil?
-    response = [response] if response.is_a?(Hash) 
-    response.map {|metric_result| new metric_result}
+    create_objects_array_from_hash request(:metric_results_of, {:module_result_id => module_result_id})[:metric_result]
   end
 
   def self.history_of(metric_name, module_result_id)

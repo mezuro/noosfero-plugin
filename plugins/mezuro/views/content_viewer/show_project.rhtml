@@ -24,29 +24,38 @@
   <table>
   <% @page.repositories.each do |repository| %>
     <tr>
-      <td><%= link_to repository.name, :controller => "mezuro_plugin_repository", 
-  																			:profile => @page.profile.identifier, 
-  																			:action => "show", 
+      <td><%= link_to repository.name, :controller => "mezuro_plugin_repository",
+  																			:profile => @page.profile.identifier,
+  																			:action => "show",
   																			:id => @page.id,
   																			:repository_id => repository.id %></td>
-  		<td ><%= link_to _('Edit'), {:controller => "mezuro_plugin_repository", 
-  																			:profile => @page.profile.identifier, 
-  																			:action => "edit", 
-  																			:id => @page.id,
-  																			:repository_id => repository.id}, :class=>"button with-text icon-edit" %></td>
-  		<td ><%= link_to _('Remove'), {:controller => "mezuro_plugin_repository", 
-  																			:profile => @page.profile.identifier, 
-  																			:action => "destroy", 
-  																			:id => @page.id,
-  																			:repository_id => repository.id}, :class=>"button with-text icon-delete" %></td>
+      <% if MezuroPlugin::Helpers::ContentViewerHelper.owner?(current_user, @page) %>
+    		<td ><%= link_to _('Edit'), {:controller => "mezuro_plugin_repository",
+    																			:profile => @page.profile.identifier,
+    																			:action => "edit",
+    																			:id => @page.id,
+    																			:repository_id => repository.id}, :class=>"button with-text icon-edit" %></td>
+    		<td ><%= link_to _('Remove'), {:controller => "mezuro_plugin_repository",
+    																			:profile => @page.profile.identifier,
+    																			:action => "destroy",
+    																			:id => @page.id,
+    																			:repository_id => repository.id}, :class=>"button with-text icon-delete" %></td>
+      <% end %>
+      <td ><%= link_to _('Notify Me'), {:controller => "mezuro_plugin_repository_observer",
+                                        :profile => @page.profile.identifier,
+                                        :action => "new",
+                                        :id => @page.id,
+                                        :repository_id => repository.id} %></td>
   	</tr>
   <% end %>
   </table>
-  
+
   <br>
-  <%= link_to "#{image_tag('/plugins/mezuro/images/plus.png')}Add Repository", :controller => "mezuro_plugin_repository", 
-  																			:profile => @page.profile.identifier, 
-  																			:action => "new", 
-  																			:id => @page.id %><br/>
+  <% if MezuroPlugin::Helpers::ContentViewerHelper.owner?(current_user, @page) %>
+    <%= link_to "#{image_tag('/plugins/mezuro/images/plus.png')}Add Repository", :controller => "mezuro_plugin_repository",
+    																			:profile => @page.profile.identifier,
+    																			:action => "new",
+    																			:id => @page.id %><br/>
+  <% end %>
 
 <% end %>

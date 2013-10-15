@@ -29,14 +29,14 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
     end
   end
 
-  def edit_compound    
+  def edit_compound
     params_to_edit_view
+    @metric_configurations = @configuration_content.metric_configurations
   end
 
   def create
     configuration_content = profile.articles.find(params[:id])
     metric_configuration = Kalibro::MetricConfiguration.create(params[:metric_configuration])
-    
     if metric_configuration_has_errors? metric_configuration
       redirect_to_error_page metric_configuration.errors[0].message
     else
@@ -98,8 +98,7 @@ class MezuroPluginMetricConfigurationController < MezuroPluginMyprofileControlle
 
   def params_to_edit_view
     @configuration_content = profile.articles.find(params[:id])
-    @metric_configurations = @configuration_content.metric_configurations
-    @metric_configuration = find_metric_configuration(@metric_configurations, params[:metric_configuration_id].to_i)
+    @metric_configuration = Kalibro::MetricConfiguration.find params[:metric_configuration_id].to_i
     @metric = @metric_configuration.metric
     @reading_group_names_and_ids = reading_group_names_and_ids
     @ranges = Kalibro::Range.ranges_of(@metric_configuration.id)

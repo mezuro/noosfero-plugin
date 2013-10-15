@@ -39,6 +39,8 @@ class MezuroPluginMetricConfigurationControllerTest < ActionController::TestCase
     @created_metric_configuration = MetricConfigurationFixtures.created_metric_configuration
     @compound_metric_configuration = MetricConfigurationFixtures.sc_metric_configuration
     @compound_metric_configuration_hash = MetricConfigurationFixtures.sc_metric_configuration_hash
+
+    @controller.expects(:verify_ownership).returns(true)
   end
 
   should 'choose metric' do
@@ -61,11 +63,15 @@ class MezuroPluginMetricConfigurationControllerTest < ActionController::TestCase
   end
 
   should 'edit native' do
-    Kalibro::MetricConfiguration.expects(:metric_configurations_of).with(@configuration.id).returns([@native_metric_configuration])
+    Kalibro::MetricConfiguration.expects(:find).with(@native_metric_configuration.id).returns(@native_metric_configuration)
     Kalibro::ReadingGroup.expects(:all).returns([@reading_group])
     Kalibro::Range.expects(:ranges_of).with(@native_metric_configuration.id).returns([@range])
-    Kalibro::Reading.expects(:find).with(@range.reading_id).returns(@reading)    
-    get :edit_native, :profile => @profile.identifier, :id => @configuration_content.id, :metric_configuration_id => @native_metric_configuration.id
+    Kalibro::Reading.expects(:find).with(@range.reading_id).returns(@reading)
+
+    get :edit_native, :profile => @profile.identifier,
+                      :id => @configuration_content.id,
+                      :metric_configuration_id => @native_metric_configuration.id
+
     assert_equal @configuration_content, assigns(:configuration_content)
     assert_equal @native_metric_configuration.code, assigns(:metric_configuration).code
     assert_equal @native_metric_configuration.metric.name, assigns(:metric).name
@@ -85,11 +91,16 @@ class MezuroPluginMetricConfigurationControllerTest < ActionController::TestCase
   end
 
   should 'edit compound' do
+    Kalibro::MetricConfiguration.expects(:find).with(@compound_metric_configuration.id).returns(@compound_metric_configuration)
     Kalibro::MetricConfiguration.expects(:metric_configurations_of).with(@configuration.id).returns([@compound_metric_configuration])
     Kalibro::ReadingGroup.expects(:all).returns([@reading_group])
     Kalibro::Range.expects(:ranges_of).with(@compound_metric_configuration.id).returns([@range])
-    Kalibro::Reading.expects(:find).with(@range.reading_id).returns(@reading)    
-    get :edit_compound, :profile => @profile.identifier, :id => @configuration_content.id, :metric_configuration_id => @compound_metric_configuration.id
+    Kalibro::Reading.expects(:find).with(@range.reading_id).returns(@reading)
+
+    get :edit_compound, :profile => @profile.identifier,
+                        :id => @configuration_content.id,
+                        :metric_configuration_id => @compound_metric_configuration.id
+
     assert_equal @configuration_content, assigns(:configuration_content)
     assert_equal @compound_metric_configuration.code, assigns(:metric_configuration).code
     assert_equal @compound_metric_configuration.metric.name, assigns(:metric).name
@@ -99,24 +110,49 @@ class MezuroPluginMetricConfigurationControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  should 'create' do
+  should 'create metric configuration' do
     Kalibro::MetricConfiguration.expects(:create).returns(@compound_metric_configuration) #FIXME need .with(some_hash), should it mock the request?.
-    get :create, :profile => @profile.identifier, :id => @configuration_content.id, :metric_configuration => @compound_metric_configuration_hash
+    get :create, :profile => @profile.identifier,
+                 :id => @configuration_content.id,
+                 :metric_configuration => @compound_metric_configuration_hash
     assert_response :redirect
   end
 
-  should 'update' do
+  should 'update native metric configuration' do
     Kalibro::MetricConfiguration.expects(:metric_configurations_of).with(@configuration_content.configuration_id).returns([@native_metric_configuration])
     @native_metric_configuration.expects(:update_attributes).returns(true) #FIXME need .with(some_hash), should it mock the request?.
-    get :update, :profile => @profile.identifier, :id => @configuration_content.id, :metric_configuration => @native_metric_configuration_hash
+    get :update, :profile => @profile.identifier,
+                 :id => @configuration_content.id,
+                 :metric_configuration => @native_metric_configuration_hash
     assert_equal @configuration_content, assigns(:configuration_content)
     assert_response :redirect
   end
 
-  should 'remove' do
+  should 'update compound metric configuration' do
+    Kalibro::MetricConfiguration.expects(:metric_configurations_of).with(@configuration_content.configuration_id).returns([@native_metric_configuration])
+    @native_metric_configuration.expects(:update_attributes).returns(true) #FIXME need .with(some_hash), should it mock the request?.
+    get :update, :profile => @profile.identifier,
+                 :id => @configuration_content.id,
+                 :metric_configuration => @compound_metric_configuration_hash
+    assert_equal @configuration_content, assigns(:configuration_content)
+    assert_response :redirect
+  end
+
+  should 'remove native metric configuration' do
     Kalibro::MetricConfiguration.expects(:new).with({:id => @native_metric_configuration.id}).returns(@native_metric_configuration)
     @native_metric_configuration.expects(:destroy).returns()
-    get :remove, :profile => @profile.identifier, :id => @configuration_content.id, :metric_configuration_id => @native_metric_configuration.id
+    get :remove, :profile => @profile.identifier,
+                 :id => @configuration_content.id,
+                 :metric_configuration_id => @native_metric_configuration.id
+    assert_response :redirect
+  end
+
+  should 'remove compound metric configuration' do
+    Kalibro::MetricConfiguration.expects(:new).with({:id => @native_metric_configuration.id}).returns(@native_metric_configuration)
+    @native_metric_configuration.expects(:destroy).returns()
+    get :remove, :profile => @profile.identifier,
+                 :id => @configuration_content.id,
+                 :metric_configuration_id => @compound_metric_configuration.id
     assert_response :redirect
   end
 

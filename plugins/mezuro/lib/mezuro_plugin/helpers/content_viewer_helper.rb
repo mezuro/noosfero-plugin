@@ -59,6 +59,10 @@ class MezuroPlugin::Helpers::ContentViewerHelper
     [["Software", "SOFTWARE"], ["Package", "PACKAGE"], ["Class", "CLASS"], ["Method", "METHOD"]]
   end
 
+  def self.owner?(current_user, page)
+    !current_user.nil? && page.setting[:author_name] == Profile.where(:user_id => current_user.id).first.name
+  end
+
   private
 
   def self.discretize_array(array)

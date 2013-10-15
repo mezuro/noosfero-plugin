@@ -15,6 +15,8 @@ class MezuroPluginRepositoryControllerTest < ActionController::TestCase
     @profile = fast_create(Community)
 
     @configuration = ConfigurationFixtures.configuration
+    @metric_configuration =
+      MetricConfigurationFixtures.registered_metric_configuration
     @repository_types = RepositoryFixtures.types
     @all_configurations = ConfigurationFixtures.all
     @repository = RepositoryFixtures.repository
@@ -24,9 +26,12 @@ class MezuroPluginRepositoryControllerTest < ActionController::TestCase
     @content.save
   end
 
-  should 'set variables to create a new repository' do
+  should 'set variables to create a new repository when configuration has metrics' do
     Kalibro::Repository.expects(:repository_types).returns(@repository_types)
     Kalibro::Configuration.expects(:all).returns(@all_configurations)
+    Kalibro::MetricConfiguration.expects(:metric_configurations_of).
+      with(@configuration.id).
+      returns([@metric_configuration])
 
     get :new, :profile => @profile.identifier, :id => @content.id
 
@@ -34,6 +39,21 @@ class MezuroPluginRepositoryControllerTest < ActionController::TestCase
     assert_equal @repository_types, assigns(:repository_types)
     assert_equal @all_configurations.first.name, assigns(:configuration_select).first.first
     assert_equal @all_configurations.first.id, assigns(:configuration_select).first.last
+    assert_response :success
+  end
+
+  should 'set variables to create a new repository when configuration has no metrics' do
+    Kalibro::Repository.expects(:repository_types).returns(@repository_types)
+    Kalibro::Configuration.expects(:all).returns(@all_configurations)
+    Kalibro::MetricConfiguration.expects(:metric_configurations_of).
+      with(@configuration.id).
+      returns([])
+
+    get :new, :profile => @profile.identifier, :id => @content.id
+
+    assert_equal @content.id, assigns(:project_content).id
+    assert_equal @repository_types, assigns(:repository_types)
+    assert assigns(:configuration_select).empty?
     assert_response :success
   end
 
@@ -55,10 +75,13 @@ class MezuroPluginRepositoryControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
-  should 'set variables to edit a repository' do
+  should 'set variables to edit a repository when configuration has metrics' do
     Kalibro::Repository.expects(:repository_types).returns(@repository_types)
     Kalibro::Configuration.expects(:all).returns(@all_configurations)
     Kalibro::Repository.expects(:repositories_of).with(@content.project_id).returns([@repository])
+    Kalibro::MetricConfiguration.expects(:metric_configurations_of).
+      with(@configuration.id).
+      returns([@metric_configuration])
 
     get :edit, :profile => @profile.identifier, :id => @content.id, :repository_id => @repository.id
 
@@ -66,6 +89,23 @@ class MezuroPluginRepositoryControllerTest < ActionController::TestCase
     assert_equal @repository_types, assigns(:repository_types)
     assert_equal @all_configurations.first.name, assigns(:configuration_select).first.first
     assert_equal @all_configurations.first.id, assigns(:configuration_select).first.last
+    assert_equal @repository, assigns(:repository)
+    assert_response :success
+  end
+
+  should 'set variables to edit a repository when configuration has no metrics' do
+    Kalibro::Repository.expects(:repository_types).returns(@repository_types)
+    Kalibro::Configuration.expects(:all).returns(@all_configurations)
+    Kalibro::Repository.expects(:repositories_of).with(@content.project_id).returns([@repository])
+    Kalibro::MetricConfiguration.expects(:metric_configurations_of).
+      with(@configuration.id).
+      returns([])
+
+    get :edit, :profile => @profile.identifier, :id => @content.id, :repository_id => @repository.id
+
+    assert_equal @content.id, assigns(:project_content).id
+    assert_equal @repository_types, assigns(:repository_types)
+    assert @repository.errors.empty?
     assert_equal @repository, assigns(:repository)
     assert_response :success
   end
@@ -100,4 +140,5 @@ class MezuroPluginRepositoryControllerTest < ActionController::TestCase
     #TODO verify if it is redirected to the right page
     assert_response :redirect
   end
+
 end

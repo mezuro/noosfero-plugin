@@ -14,9 +14,12 @@ class MezuroPluginReadingControllerTest < ActionController::TestCase
     @reading = ReadingFixtures.reading
     @created_reading = ReadingFixtures.created_reading
     @reading_hash = ReadingFixtures.hash
+    
     @content = MezuroPlugin::ReadingGroupContent.new(:profile => @profile, :name => name)
     @content.expects(:send_reading_group_to_service).returns(nil)
     @content.save
+
+    @controller.expects(:verify_ownership).returns(true)
   end
 
   should 'set variables to create a new reading' do

@@ -1,5 +1,8 @@
 var processingTree = false;
 var metricName;
+var displayed_charts = [];
+var moduleResults =  null;
+
 jQuery(function (){
   jQuery('.source-tree-link').live("click", reloadModule);
   jQuery('[show-metric-history]').live("click", display_metric_history);
@@ -9,18 +12,39 @@ jQuery(function (){
   showProcessing();
 });
 
+function callAction(controller, action, params, callback){
+  var profile = processingData('profile');
+  var content = processingData('content');
+  var endpoint = '/profile/' + profile + '/plugin/mezuro/' + controller + '/' + action + '/' + content;
+  jQuery.get(endpoint, params, callback);
+}
+
 function showProcessing() {
   repository_id = processingData('repository-id');
   callAction('processing', 'state', {repository_id: repository_id}, showProcessingFor);
 }
 
 function display_metric_history() {
+  var nTr = this.parentNode.parentNode; //gets the clicked TR
+  var trIndex = jQuery.inArray( nTr, displayed_charts );
   var module_result_id = jQuery(this).attr('data-module-id');
   var formatted_name = jQuery(this).attr('show-metric-history');
   var metric_name = jQuery(this).attr('data-metric-name');
-  toggle_mezuro("." + formatted_name);
+  var metric_id = jQuery(this).attr('data-metric-id');
+
+  if ( trIndex === -1 ) {//The element was not found in the displayed_charts Array
+    moduleResults.fnOpen( nTr, function() {}, 'metric_history_'+formatted_name ); // So we create a new row after the clicked one
+    displayed_charts.push( nTr ); // Finally we add it to the Array!
+  }
+  else { //Otherwise, we remove the row
+    moduleResults.fnClose( nTr );
+    displayed_charts.splice( trIndex, 1 );
+  }
+
   metricName = formatted_name;
-  callAction('module_result', 'metric_result_history', {metric_name: metric_name, module_result_id: module_result_id}, show_metrics);
+  jQuery('.metric_history_' + metricName).html("<img src='/images/loading-small.gif'/>");
+  callAction('module_result', 'metric_result_history', {metric_name: metric_name, module_result_id: module_result_id, metric_id: metric_id}, show_metrics );
+
   return false;
 }
 
@@ -32,7 +56,7 @@ function display_grade_history() {
 }
 
 function show_metrics(content) {
-  jQuery('#historical-' + metricName).html(content);
+  jQuery('.metric_history_' + metricName).html(content);
 }
 
 function show_grades(content) {
@@ -41,7 +65,6 @@ function show_grades(content) {
 
 function toggle_mezuro(element){
   jQuery(element).toggle();
-  return false;
 }
 
 function reloadModule(){
@@ -60,13 +83,13 @@ function reloadProcessingWithDate(date){
 function reloadProcessing(date){
   repository_id = processingData('repository-id');
   showLoadingProcess(true);
+  callAction('processing', 'processing', {date: date, repository_id: repository_id}, processingCallback);
+}
 
-  callAction('processing', 'processing', {date: date, repository_id: repository_id}, function(content){
-                                                                            showReadyProcessing(content);
-                                                                            var module_result_id = jQuery("#module_result_root_id").attr('module_result_root_id');
-                                                                            callAction('module_result', 'module_result', {module_result_id: module_result_id}, showModuleResult);
-                                                                         }
-            );
+function processingCallback(content){
+  showReadyProcessing(content);
+  var module_result_id = jQuery("#module_result_root_id").attr('module_result_root_id');
+  callAction('module_result', 'module_result', {module_result_id: module_result_id}, showModuleResult);
 }
 
 function showProcessingFor(state){
@@ -79,23 +102,18 @@ function showProcessingFor(state){
   else if (state == 'READY') {
     jQuery('#msg-time').html('');
     jQuery('#processing-state').html('<div style="color:Green">READY</div>');
-    callAction('processing', 'processing', {repository_id: repository_id}, function(content){
-                                                                              showReadyProcessing(content);
-                                                                              var module_result_id = jQuery("#module_result_root_id").attr('module_result_root_id');
-                                                                              callAction('module_result', 'module_result', {module_result_id: module_result_id}, showModuleResult);
-                                                                           }
-              );
+    callAction('processing', 'processing', {repository_id: repository_id}, processingCallback);
   }
   else if (state.endsWith("ING")) {
     jQuery('#processing-state').html('<div style="color:DarkGoldenRod">'+ state +'</div>');
     jQuery('#msg-time').html("The project analysis may take long. <br/> You'll receive an e-mail when it's ready!");
-    showProcessingAfter(20);
+    showProcessingAfter(2);
   }
 }
 
 function showProcessingAfter(seconds){
   if (seconds > 0){
-    setTimeout(function() { showProcessingAfter(seconds - 10);}, 10000);
+    setTimeout(function() { showProcessingAfter(seconds - 1);}, 1000);
   } else {
     showProcessing();
   }
@@ -106,14 +124,8 @@ function showReadyProcessing(content) {
 }
 
 function showModuleResult(content){
-    jQuery('#module-result').html(content);
-}
-
-function callAction(controller, action, params, callback){
-  var profile = processingData('profile');
-  var content = processingData('content');
-  var endpoint = '/profile/' + profile + '/plugin/mezuro/' + controller + '/' + action + '/' + content;
-  jQuery.get(endpoint, params, callback);
+    jQuery('div#module-result').html(content);
+    moduleResults = jQuery('table#module-result').dataTable({"sDom" : "ft", "iDisplayLength" : -1}); //{"sDom" : "tf", "iDisplayLength" : -1} shows just the table and the filtering and removes the row limit
 }
 
 function processingData(data){

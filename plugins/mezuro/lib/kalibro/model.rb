@@ -13,18 +13,7 @@ class Kalibro::Model
     excepts = options[:except].nil? ? [] : options[:except]
     excepts << :errors
     fields.each do |field|
-      if(!excepts.include?(field))
-        field_value = send(field)
-        if !field_value.nil?
-            hash[field] = convert_to_hash(field_value)
-          if field_value.is_a?(Kalibro::Model)
-            hash = {:attributes! => {}}.merge(hash)
-            hash[:attributes!][field.to_sym] = {
-              'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',
-              'xsi:type' => 'kalibro:' + xml_instance_class_name(field_value)  }
-          end
-        end
-      end
+      hash = field_to_hash(field).merge(hash) if !excepts.include?(field)
     end
     hash
   end
@@ -34,19 +23,46 @@ class Kalibro::Model
     response.to_hash["#{action}_response".to_sym] # response is a Savon::SOAP::Response, and to_hash is a Savon::SOAP::Response method
   end
 
-  def self.to_objects_array value
-    array = value.kind_of?(Array) ? value : [value]
-    array.each.collect { |element| to_object(element) }
-  end
-
   def self.to_object value
     value.kind_of?(Hash) ? new(value) : value
+  end
+
+  def self.to_objects_array value
+    array = value.kind_of?(Array) ? value : [value]
+    array.each.map { |element| to_object(element) }
+  end
+
+  def save
+    begin
+      self.id = self.class.request(save_action, save_params)["#{instance_class_name.underscore}_id".to_sym]
+	  true
+    rescue Exception => exception
+      add_error exception
+      false
+    end
   end
 
   def self.create(attributes={})
     new_model = new attributes
     new_model.save
     new_model
+  end
+
+  def ==(another)
+    unless self.class == another.class then
+      return false
+    end
+    self.variable_names.each {
+      |name|
+      unless self.send("#{name}") == another.send("#{name}") then
+        return false
+      end
+    }
+    true
+  end
+
+  def self.exists?(id)
+    request(exists_action, id_params(id))[:exists]
   end
 
   def self.find(id)
@@ -57,32 +73,28 @@ class Kalibro::Model
     end
   end
 
-  def save
-    begin
-      self.id = self.class.request(save_action, save_params)["#{instance_class_name.underscore}_id".to_sym]
-	    true
-	  rescue Exception => exception
-	    add_error exception
-	    false
-	  end
-  end
-
   def destroy
     begin
       self.class.request(destroy_action, destroy_params)
     rescue Exception => exception
-	    add_error exception
+      add_error exception
     end
   end
-
-  def self.exists?(id)
-    request(exists_action, id_params(id))[:exists]
+ 
+  def self.create_objects_array_from_hash (response)
+    response = [] if response.nil?
+    response = [response] if response.is_a?(Hash) 
+    response.map { |hash| new hash }
   end
 
   protected
 
   def fields
     instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '').to_sym }
+  end
+
+  def variable_names
+    instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '') }
   end
 
   def convert_to_hash(value)
@@ -158,6 +170,28 @@ class Kalibro::Model
 
   def add_error(exception)
     @errors << exception
+  end
+
+  def get_xml(field, field_value)
+	hash = Hash.new
+    if field_value.is_a?(Kalibro::Model)
+      hash = {:attributes! => {}}
+      hash[:attributes!][field.to_sym] = {
+        'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',
+        'xsi:type' => 'kalibro:' + xml_instance_class_name(field_value)
+	  }
+    end
+    hash
+  end
+
+  def field_to_hash(field)
+    hash = Hash.new
+    field_value = send(field)
+    if !field_value.nil?
+      hash[field] = convert_to_hash(field_value)
+      hash = get_xml(field, field_value).merge(hash)
+    end
+    hash
   end
 
 end

@@ -1,6 +1,7 @@
 require "test_helper"
 
 require "#{RAILS_ROOT}/plugins/mezuro/test/fixtures/repository_fixtures"
+require "#{RAILS_ROOT}/plugins/mezuro/test/fixtures/repository_observer_fixtures"
 
 class RepositoryTest < ActiveSupport::TestCase
 

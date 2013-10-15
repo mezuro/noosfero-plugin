@@ -52,8 +52,14 @@ class ProjectContentTest < ActiveSupport::TestCase
   should 'add error to base when getting the repositories of a project that does not exist' do
     Kalibro::Repository.expects(:repositories_of).with(@project.id).raises(Kalibro::Errors::RecordNotFound)
     assert_nil @project_content.errors[:base]
-    @project_content.repositories
+    assert_equal [], @project_content.repositories
     assert_not_nil @project_content.errors[:base]
   end
+
+  should 'set description of the project correctly' do
+    assert_equal "return", @project_content.description = "return"
+    assert_not_equal "return", @project_content.description = "return2"
+  end
+
 
 end

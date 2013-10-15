@@ -157,6 +157,16 @@ When /^I follow the (edit|remove) link for "([^"]*)" (repository|reading)$/ do |
   action_link.click
 end
 
+Given /^I follow the notify link for "([^"]*)" repository$/ do |name|
+  project_id = Kalibro::Project.all.last.id
+  repositories = Kalibro::Repository.repositories_of project_id
+  repository_id = repositories.select {|option| option.name == name}.first.id
+
+  elements = all('a', :text => "Notify Me")
+  action_link = elements.select {|element| (/repository_id=#{repository_id}/ =~ element[:href])  }.first
+  action_link.click
+end
+
 Then /^I should see the "([^"]*)" color$/ do |color_name|
   elements = all('td', :text => "")
   found = elements.select { |element| color_name == element[:bgcolor]}.first

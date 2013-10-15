@@ -45,8 +45,13 @@ class MetricConfigurationTest < ActiveSupport::TestCase
   end
 
   should 'destroy metric configuration' do
-    Kalibro::MetricConfiguration.expects(:request).with(:delete_metric_configuration, :metric_configuration_id => @native_metric_configuration.id)
+    Kalibro::MetricConfiguration.expects(:request).with(:delete_metric_configuration, {:metric_configuration_id => @native_metric_configuration.id})
     @native_metric_configuration.destroy
   end
+
+  should 'find metric configuration' do
+    Kalibro::MetricConfiguration.expects(:request).with(:get_metric_configuration, {:metric_configuration_id => @native_metric_configuration.id}).returns({:metric_configuration => @native_metric_configuration_hash})
+    assert_equal @native_metric_configuration.id, Kalibro::MetricConfiguration.find(@native_metric_configuration.id).id
+  end 
 
 end
