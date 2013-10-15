@@ -60,7 +60,7 @@ class MezuroPlugin::Helpers::ContentViewerHelper
   end
 
   def self.owner?(current_user, page)
-    !current_user.nil? && page.setting[:author_name] == current_user.login
+    !current_user.nil? && page.setting[:author_name] == Profile.where(:user_id => current_user.id).first.name
   end
 
   private
