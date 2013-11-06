@@ -1,9 +1,0 @@
-/var/log/noosfero/*.log {
-        daily
-        missingok
-        rotate 30
-        compress
-        delaycompress
-        notifempty
-        copytruncate
-}
